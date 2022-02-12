@@ -1,0 +1,11 @@
+import win.ui;
+/*DSG{{*/
+var winform = win.form(text="aardio form";right=759;bottom=469;bgcolor=16777215)
+winform.add(
+static={cls="static";text="系统管理";left=8;top=17;right=135;bottom=48;transparent=1;z=1}
+)
+/*}}*/
+
+winform.show();
+win.loopMessage();
+return winform;
