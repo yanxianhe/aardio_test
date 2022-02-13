@@ -6,7 +6,7 @@ login_index.add(
 copy_tx={cls="plus";text="copyright © 2012-2022 rymap All Rights Reserve";left=432;top=389;right=721;bottom=409;color=8212224;notify=1;z=1};
 lgoin_tx_info_a0={cls="plus";text="众志成城，攻坚克难";left=29;top=56;right=316;bottom=112;color=8212224;font=LOGFONT(h=-27;weight=700);z=2};
 lgoin_tx_info_a1={cls="plus";text="社区安全，你我共建";left=58;top=112;right=337;bottom=162;color=8212224;font=LOGFONT(h=-27;weight=700);z=3};
-login_bk_a1={cls="bk";left=19;top=236;right=383;bottom=468;background="\imags\images\登录页_04.gif";dl=1;dt=1;z=4};
+login_bk_a1={cls="bk";left=19;top=236;right=383;bottom=468;background="\forms\images\登录页_04.gif";dl=1;dt=1;z=4};
 login_bx_a1={cls="plus";text="登录";left=554;top=300;right=628;bottom=330;align="left";bgcolor=-8564992;color=16777215;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-15;name='FontAwesome');padding={left=8}};iconText='\uF00C';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;tabstop=1;textPadding={left=26};z=6};
 login_pwd_stx_a1={cls="static";text="密  码 :";left=432;top=230;right=502;bottom=255;align="center";center=1;color=8212224;font=LOGFONT(h=-16);transparent=1;z=10};
 login_pwd_tx_a1={cls="edit";left=517;top=231;right=686;bottom=255;edge=1;password=1;tabstop=1;z=8};
@@ -64,6 +64,11 @@ login_index.wndproc = function(hwnd,message,wparam,lparam){
         }
     }
 }
+
+login_index.login_bk_a1.onDrawBackground = function(graphics,rc){
+	
+}
+
 login_index.show();
 win.loopMessage()
-return login_index; 
+return login_index;
