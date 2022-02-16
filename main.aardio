@@ -1,5 +1,7 @@
 import fonts.fontAwesome;
 import win.ui;
+import sqlite;
+import fsys;
 /*DSG{{*/
 mainForm = win.form(text="社区安全管理系统";right=1019;bottom=679;bgcolor=16777215;border="none")
 mainForm.add(
@@ -53,12 +55,15 @@ tbs.loadForm(1,"\forms\main\user_info_menu.aardio" );
 tbs.loadForm(2,"\forms\main\user_address_menu.aardio" );
 tbs.loadForm(3,"\forms\main\search_men.aardio" );
 tbs.loadForm(4,"\forms\main\sys_menu.aardio" );
+
+
 /*
 tbs.loadForm(n,"\forms\main\frmPage3.aardio" );
 */
 
 
 tbs.selIndex = 1;
+
 
 // 引入登录界面
 var frmChild = mainForm.loadForm("\forms\login\login.aardio");

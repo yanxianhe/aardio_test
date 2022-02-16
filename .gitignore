@@ -1,5 +1,6 @@
 # vscode
 .vscode/*
-.build/*
 
+build_error_log.txt
+.build/*
 dist/*

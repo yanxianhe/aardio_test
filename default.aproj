@@ -1,15 +1,24 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<project ver="10" name="社区安全管理系统" libEmbed="true" icon="..." ui="win" output="社区安全管理系统.exe" CompanyName="单位名称" FileDescription="社区安全管理系统" LegalCopyright="Copyright (C) 作者 2022" ProductName="社区安全管理系统" InternalName="社区安全管理系统" FileVersion="0.0.0.1" ProductVersion="0.0.0.1" publishDir="/dist/" dstrip="false">
+<project ver="10" name="社区安全管理系统" libEmbed="true" icon="..." ui="win" output="社区安全管理系统.exe" CompanyName="单位名称" FileDescription="社区安全管理系统" LegalCopyright="rmkj" ProductName="社区安全管理系统" InternalName="社区安全管理系统" FileVersion="0.0.0.03" ProductVersion="0.0.0.03" publishDir="/dist/" dstrip="false">
 	<file name="main" path="main.aardio"/>
-	<folder name="窗体" path="forms" comment="" embed="true">
-		<folder name="main" path="forms\main" embed="true" comment="目录" local="false" ignored="false">
+	<folder name="窗体" path="forms" comment="" embed="true" local="false" ignored="false">
+		<folder name="login" path="forms\login" comment="forms\login">
+			<file name="login.aardio" path="forms\login\login.aardio" comment="forms\login\login.aardio"/>
+		</folder>
+		<folder name="main" path="forms\main" comment="forms\main" local="false" embed="false" ignored="false">
 			<file name="search_men.aardio" path="forms\main\search_men.aardio" comment="forms\main\search_men.aardio"/>
 			<file name="sys_menu.aardio" path="forms\main\sys_menu.aardio" comment="forms\main\sys_menu.aardio"/>
 			<file name="user_address_menu.aardio" path="forms\main\user_address_menu.aardio" comment="forms\main\user_address_menu.aardio"/>
 			<file name="user_info_menu.aardio" path="forms\main\user_info_menu.aardio" comment="forms\main\user_info_menu.aardio"/>
+			<file name="test.aardio" path="forms\main\test.aardio" comment="forms\main\test.aardio"/>
 		</folder>
-		<folder name="login" path="forms\login" embed="true" comment="目录" local="false" ignored="false">
-			<file name="login.aardio" path="forms\login\login.aardio" comment="forms\login\login.aardio"/>
+		<folder name="images" path="forms\images" comment="forms\images">
+			<file name="登录页_01.gif" path="forms\images\登录页_01.gif" comment="forms\images\登录页_01.gif"/>
+			<file name="登录页_02.gif" path="forms\images\登录页_02.gif" comment="forms\images\登录页_02.gif"/>
+			<file name="登录页_03.gif" path="forms\images\登录页_03.gif" comment="forms\images\登录页_03.gif"/>
+			<file name="登录页_04.gif" path="forms\images\登录页_04.gif" comment="forms\images\登录页_04.gif"/>
+			<file name="登录页_05.gif" path="forms\images\登录页_05.gif" comment="forms\images\登录页_05.gif"/>
+			<file name="登录页_06.gif" path="forms\images\登录页_06.gif" comment="forms\images\登录页_06.gif"/>
 		</folder>
 	</folder>
 </project>
