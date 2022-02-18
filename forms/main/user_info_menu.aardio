@@ -1,16 +1,14 @@
+import fonts.fontAwesome;
 import win.ui;
+import win.ui.grid;
 import console;
 import fsys;
 import sqlite;
 import win.ui.menu;
 /*DSG{{*/
-var winform = win.form(text="用户信息";right=759;bottom=469;bgcolor=16777215;max=false)
+var winform = win.form(text="用户信息";right=816;bottom=480;bgcolor=16777215;max=false)
 winform.add(
-button={cls="button";text="读证件";left=319;top=181;right=375;bottom=205;dl=1;dt=1;z=23};
-combobox3={cls="combobox";left=35;top=317;right=144;bottom=343;dl=1;dt=1;edge=1;items={};mode="dropdown";z=21};
-combobox4={cls="combobox";left=181;top=317;right=318;bottom=343;dl=1;dt=1;edge=1;items={};mode="dropdown";z=22};
-datetimepick2={cls="datetimepick";left=97;top=217;right=186;bottom=237;dl=1;dt=1;edge=1;z=18};
-datetimepick3={cls="datetimepick";left=225;top=216;right=317;bottom=236;dl=1;dt=1;edge=1;z=19};
+button={cls="plus";text="读证件";left=313;top=181;right=381;bottom=203;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=2}};iconText='\uF002';textPadding={left=16};z=23};
 groupbox={cls="groupbox";left=9;top=37;right=391;bottom=415;ah=1;aw=1;dl=1;dt=1;edge=1;z=1};
 picturebox={cls="picturebox";left=268;top=50;right=355;bottom=129;dl=1;dt=1;notify=1;z=16};
 static={cls="static";text="性别";left=37;top=94;right=66;bottom=113;dl=1;dt=1;transparent=1;z=3};
@@ -22,36 +20,71 @@ static6={cls="static";text="证件号码";left=37;top=185;right=96;bottom=212;dl
 static7={cls="static";text="有效日期";left=36;top=214;right=97;bottom=236;dl=1;dt=1;transparent=1;z=8};
 static8={cls="static";text="签发机关";left=37;top=253;right=100;bottom=274;dl=1;dt=1;transparent=1;z=9};
 static9={cls="static";text="所属区域：";left=37;top=292;right=110;bottom=310;dl=1;dt=1;transparent=1;z=10};
-user_info_address_tx_a0={cls="edit";left=67;top=144;right=374;bottom=174;dl=1;dt=1;edge=1;multiline=1;z=15};
+user_end_date_bx={cls="datetimepick";left=225;top=216;right=317;bottom=236;dl=1;dt=1;edge=1;z=19};
+user_info_address_tx_a0={cls="edit";left=67;top=144;right=381;bottom=174;dl=1;dt=1;edge=1;multiline=1;z=15};
 user_info_birthday_box={cls="datetimepick";left=70;top=121;right=175;bottom=141;dl=1;dt=1;edge=1;z=14};
 user_info_grep_tx_a0={cls="edit";left=97;top=249;right=271;bottom=276;dl=1;dt=1;edge=1;z=20};
 user_info_id_tx_a0={cls="edit";left=105;top=181;right=310;bottom=206;dl=1;dt=1;edge=1;z=17};
 user_info_name_tx_a0={cls="edit";text="输入姓名";left=70;top=62;right=160;bottom=84;dl=1;dt=1;edge=1;z=11};
 user_info_nation_box_a0={cls="combobox";left=175;top=87;right=227;bottom=107;dl=1;dt=1;edge=1;items={};mode="dropdown";z=13};
-user_info_sex_box={cls="combobox";left=71;top=90;right=124;bottom=110;dl=1;dt=1;edge=1;items={};mode="dropdown";z=12}
+user_info_region_a0={cls="combobox";left=35;top=317;right=144;bottom=343;dl=1;dt=1;edge=1;items={};mode="dropdown";z=21};
+user_info_region_a1={cls="combobox";left=181;top=317;right=318;bottom=343;dl=1;dt=1;edge=1;items={};mode="dropdown";z=22};
+user_info_sex_box={cls="combobox";left=71;top=90;right=124;bottom=110;dl=1;dt=1;edge=1;items={};mode="dropdown";z=12};
+user_info_submit_a0={cls="plus";text="保存";left=446;top=421;right=545;bottom=451;align="left";bgcolor=-5197169;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF00C';notify=1;textPadding={left=39};z=25};
+user_info_tab={cls="tab";left=396;top=22;right=805;bottom=415;ah=1;aw=1;bgcolor=16777215;dr=1;dt=1;edge=1;z=26};
+user_info_update_a0={cls="plus";text="取消";left=245;top=421;right=344;bottom=451;align="left";bgcolor=-5197169;dl=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF021';notify=1;textPadding={left=39};z=24};
+user_start_date_bx={cls="datetimepick";left=97;top=217;right=186;bottom=237;dl=1;dt=1;edge=1;z=18}
 )
 /*}}*/
 
-try{
-/*
-	var dir = fsys.getCurDir() ++ "\sqlite";
-	if(fsys.isDir(dir)){
-		sqlite_dir = dir ++ "\rmkj.db"
-	}else{
-		winform.msgbox("请检查数据配置……");
+winform.button.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
 	}
-	var quer_db = sqlite(sqlite_dir)
-*/
+})
+
+winform.user_info_submit_a0.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+winform.user_info_update_a0.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+// 
+var quer_db = sqlite("\sqlite\rmkj.db");
+try{
 	
-	var quer_db = sqlite("\sqlite\rmkj.db")
 	// 性别
-	for sex_id,sex_name in quer_db.each("SELECT sex_id,sex_name from tbsex ORDER BY sex_id DESC LIMIT 2;") {
+	for rowid,sex_id,sex_name in quer_db.each("SELECT rowid,sex_id,sex_name from tbsex ORDER BY sex_id DESC LIMIT 2;") {
 		winform.user_info_sex_box.add(sex_name);
 		winform.user_info_sex_box.selText = sex_name;
 	}
 	
 	// 民族
-	for nation_id,nation_name in quer_db.each("SELECT nation_id,nation_name from tbnation ORDER BY nation_id DESC LIMIT 100;") {
+	for rowid,nation_id,nation_name in quer_db.each("SELECT rowid,nation_id,nation_name from tbnation ORDER BY nation_id DESC LIMIT 100;") {
 		winform.user_info_nation_box_a0.add(nation_name);
 		winform.user_info_nation_box_a0.selText = nation_name;
 	}
@@ -60,14 +93,182 @@ try{
 catch(e){
 	winform.msgbox(e)
 }
+
+// 全局变量 user_info 
+
+
+
+// -----------核酸检测 接种信息-------------
+var nucleic_acid = winform.user_info_tab.loadForm("\forms\main\nucleic_acid.aardio");
+var inoculation = winform.user_info_tab.loadForm("\forms\main\inoculation.aardio");
+
+
+// -----------核酸检测 接种信息-------------
+
+// 初始化人员标志
+var user_flg = false;
+
+
 winform.button.oncommand = function(id,event){
 	//读取卡信息
-	winform.msgbox("确认是否读取设备，……")
+	var user_id = winform.user_info_id_tx_a0.text
+	var sql = "select rowid,user_name,birthday_date,user_id,sex_name,nation_name,address_info,start_date,end_date,user_grep,user_region0,user_region1 from tbuser where user_id = '" ++ user_id ++ "' ORDER BY user_id DESC;"
+	var rel = quer_db.stepQuery(sql);
+	// 证件号码不存在插入数据
+	if(rel == null){
+
+		user_flg = true;
+	}else {
+		// 姓名
+		winform.user_info_name_tx_a0.text  = rel['user_name'];
+		// 出生日期)
+		winform.user_info_birthday_box.time=time(rel['birthday_date'],"%Y-%m-%d");
+		//性别
+		winform.user_info_sex_box.text  = rel['sex_name'];
+		// 民族
+		winform.user_info_nation_box_a0.text  = rel['nation_name'];
+		// 地址
+		winform.user_info_address_tx_a0.text  = rel['address_info'];
+		// 证件号码
+		//winform.user_info_id_tx_a0.text  = ;
+		// 有效日期
+		winform.user_start_date_bx.time=time(rel['start_date'],"%Y-%m-%d");;
+		winform.user_end_date_bx.time=time(rel['end_date'],"%Y-%m-%d");
+		// 签发机构
+		winform.user_info_grep_tx_a0.text  = rel['user_grep'];
+		// 区域
+		winform.user_info_region_a0.text  = rel['user_region0'];
+		winform.user_info_region_a1.text  = rel['user_region1'];
+		
+		//动态窗台listview 使用 grid 创建视图
+		var sql = "SELECT result_date,inspection_results,citek,inspection_date FROM tbnucleicacid where user_id = '" ++ user_id ++ "'ORDER BY inspection_date DESC  LIMIT 30 ";
+		var dataTable = quer_db.getTable(sql);
+		var grid = win.ui.grid(nucleic_acid.nucleic_acid_list);//创建数据视图
+		grid.setReadonlyColumns(1);//可选设置禁止编辑的列
+		grid.setColumns({"结果日期";"检测结果";"检测机构";"检测日期"}); //可选自定义显示列名
+		grid.setTable( dataTable );
+	}
+	
+	
+	nucleic_acid.nucleic_acid_user_id.text = user_id;
+	inoculation.inoculation_user_id.text = user_id;
+
+	
+	
+	
 }
 
 winform.picturebox.oncommand = function(id,event){
 	//获取图片取本地 还是实时获取
 	winform.msgbox("获取图片取本地 还是实时获取，……")
+}
+
+// 修改人员信息
+winform.user_info_update_a0.oncommand = function(id,event){
+	//修改
+}
+
+// 提交人员信息
+winform.user_info_submit_a0.oncommand = function(id,event){
+	
+
+	/* 人员录入信息 begin */
+	// 姓名
+	var user_name = winform.user_info_name_tx_a0.text;
+	//出生日期
+	var birthday_date = winform.user_info_birthday_box.text;
+	//性别
+	var sex_name = winform.user_info_sex_box.text;
+	// 民族
+	var nation_name = winform.user_info_nation_box_a0.text;
+	// 地址
+	var address_info = winform.user_info_address_tx_a0.text;
+	// 证件号码
+	var user_id = winform.user_info_id_tx_a0.text;
+	// 有效日期
+	var start_date = winform.user_start_date_bx.text;
+	var end_date = winform.user_end_date_bx.text;
+	// 签发机构
+	var user_grep = winform.user_info_grep_tx_a0.text;
+	// 区域
+	var user_region0 = winform.user_info_region_a0.text;
+	var user_region1 = winform.user_info_region_a1.text;
+	
+	
+	
+
+	/* 人员录入信息 end */
+	
+	/* 核酸检测页面信息 begin */ 
+	var inspection_date = nucleic_acid.inspection_date_tx_a0.text;
+	var result_date = nucleic_acid.inspection_results_date_a0.text;
+	var citek = nucleic_acid.uncleic_acid_citek_tx_a0.text;
+	var inspection_results = nucleic_acid.inspection_results_tx_a0.text;
+	
+	
+	/* 核酸检测页面信息 end */ 
+	
+	
+	
+	
+	/* 接种信息 begin */ 
+	
+	/* 接种信息 end */ 
+	
+	
+	
+	
+	// 人员是否需要入口
+	if (user_flg) {
+		try{
+			var tbuser_db = sqlite("\sqlite\rmkj.db");
+			var cmd = tbuser_db.prepare("REPLACE INTO tbuser VALUES (@user_name,@user_id,@sex_name,@nation_name,@address_info,@start_date,@end_date,@user_grep,@user_region0,@user_region1,@birthday_date);" ) 
+			cmd.step(  
+				user_name = user_name;
+				user_id = user_id;
+				sex_name = sex_name;
+				nation_name = nation_name;
+				address_info = address_info;
+				start_date = start_date;
+				end_date = end_date;
+				user_grep = user_grep;
+				user_region0 = user_region0;
+				user_region1 = user_region1;
+				birthday_date = birthday_date;
+			)
+			tbuser_db.close();	
+		}
+		catch(e){
+			tbuser_db.close();
+		}
+		
+
+	}
+	
+	// 核酸是否需要入口
+	//winform.msgbox(inspection_date ++ result_date ++ citek ++ inspection_results);
+	try{
+		var tbnucleicacid = sqlite("\sqlite\rmkj.db");
+		
+		var q_sql = "select rowid,user_id,inspection_date from tbnucleicacid where user_id = '" ++ user_id ++ "' and inspection_date = ' " ++ inspection_date ++ "'";
+		var q_rel = tbnucleicacid.stepQuery(q_sql);
+		// 证件号码一天只能录入一次 (一天做一次核酸)
+		if(q_rel == null && #citek){
+			var cmd = tbnucleicacid.prepare("REPLACE INTO tbnucleicacid VALUES (@user_id,@inspection_date,@citek,@inspection_results,@result_date);" ) 
+			cmd.step(
+				user_id = user_id;
+				inspection_date = inspection_date;
+				citek = citek;
+				inspection_results = inspection_results;
+				result_date = result_date;
+			)
+			
+			tbnucleicacid.close();
+		}
+	}
+	catch(e){
+		tbnucleicacid.close();
+	}	
 }
 
 winform.show();

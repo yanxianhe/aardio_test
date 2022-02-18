@@ -1,6 +1,7 @@
 import fonts.fontAwesome;
 import win.ui;
 import console;
+import sqlite;
 /*DSG{{*/
 var winform = win.form(text="搜索人员";right=759;bottom=469;bgcolor=16777215)
 winform.add(
@@ -28,10 +29,18 @@ winform.plus.oncommand = function(id,event){
 		//winform.msgbox("请输入正确的查询内容！")
 		return winform;
 	}else{
-		//查询数据库或接口
-		//console.log("正在查寻询内容！")
-		//winform.msgbox("要查询的:"+search);
-		winform.msgbox(search)
+		user_id = winform.search_tx_a1.text;
+		var quer_db = sqlite("\sqlite\rmkj.db")
+		var sql = "select rowid,user_id from tbuser where user_id = '" ++ user_id ++ "' ORDER BY user_id DESC;"
+		var rel = quer_db.stepQuery(sql);
+		// 身份证存在
+		if(rel != null){
+			winform.msgbox("1");
+		}else{
+			winform.msgbox("2")
+		}
+		
+		
 		
 	}
 	

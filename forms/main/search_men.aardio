@@ -1,11 +1,12 @@
 import fonts.fontAwesome;
 import win.ui;
 import console;
+import sqlite;
 /*DSG{{*/
 var winform = win.form(text="搜索人员";right=759;bottom=469;bgcolor=16777215)
 winform.add(
 plus={cls="plus";text="搜索";left=456;top=37;right=555;bottom=67;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF002';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=2};
-search_tx_a1={cls="edit";left=68;top=37;right=425;bottom=67;dl=1;dt=1;edge=1;multiline=1;z=1}
+search_tx_a1={cls="edit";left=68;top=37;right=425;bottom=67;dl=1;dt=1;edge=1;z=1}
 )
 /*}}*/
 
@@ -24,13 +25,25 @@ winform.plus.skin({
 winform.plus.oncommand = function(id,event){
 	var search = winform.search_tx_a1.text;
 	if(search == 0){
-		console.log("请输入正确的查询内容！")
-		//winform.msgbox("请输入正确的查询内容！")
+		//console.log("请输入正确的查询内容！")
+		winform.msgbox("请输入正确的查询内容！")
 		return winform;
 	}else{
+		var quer_db = sqlite("\sqlite\rmkj.db")
+		// 查询结果
+		var flg = null;
 		//查询数据库或接口
-		console.log("正在查寻询内容！")
-		//winform.msgbox("要查询的:"+search);
+		//console.log("正在查寻询内容！")
+		var sql = "select rowid,* from tbuser where user_id = '" ++ search ++ "' or user_name = '" ++ search ++ "' ORDER BY user_id DESC;"
+		for rowid,user_name,user_id in quer_db.each(sql) {
+			// 查询结果
+			flg = user_id;
+			winform.msgbox( "姓名：" ++ user_name ++ "身份证号：" + user_id ++ "。已打第三针 " ++ "北京生物制药")
+		}
+		if (flg == null) {
+			winform.msgbox(" 查询不到该人员,请补录信息！")
+			return winform;
+		}
 		
 		
 	}

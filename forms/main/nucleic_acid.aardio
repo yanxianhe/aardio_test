@@ -1,0 +1,67 @@
+import win.ui;
+import win.ui.grid;
+import sqlite;
+
+/*DSG{{*/
+var nucleic_acid_from = win.form(text="核酸信息";right=759;bottom=469;bgcolor=16777215)
+nucleic_acid_from.add(
+inspection_date_tx_a0={cls="datetimepick";left=101;top=20;right=185;bottom=40;dl=1;dt=1;edge=1;z=6};
+inspection_results_date_a0={cls="datetimepick";left=99;top=57;right=185;bottom=77;dl=1;dt=1;edge=1;z=9};
+inspection_results_tx_a0={cls="edit";left=301;top=49;right=394;bottom=70;dl=1;dt=1;edge=1;z=8};
+nucleic_acid_list={cls="listview";left=20;top=172;right=744;bottom=449;ah=1;aw=1;edge=1;vscroll=1;z=10};
+nucleic_acid_user_id={cls="edit";left=34;top=94;right=151;bottom=118;dl=1;dt=1;edge=1;hide=1;multiline=1;z=11};
+plus={cls="plus";text="核酸检测记录";left=1;top=136;right=759;bottom=166;align="left";bgcolor=11580047;dl=1;dt=1;font=LOGFONT(h=-16);textPadding={left=145};z=5};
+static={cls="static";text="检测日期：";left=29;top=22;right=111;bottom=40;dl=1;dt=1;transparent=1;z=1};
+static2={cls="static";text="检测机构：";left=232;top=20;right=314;bottom=41;dl=1;dt=1;transparent=1;z=2};
+static3={cls="static";text="检测结果：";left=234;top=53;right=307;bottom=73;dl=1;dt=1;transparent=1;z=3};
+static4={cls="static";text="结果日期：";left=30;top=61;right=107;bottom=77;dl=1;dt=1;transparent=1;z=4};
+uncleic_acid_citek_tx_a0={cls="edit";left=300;top=17;right=393;bottom=38;dl=1;dt=1;edge=1;z=7}
+)
+/*}}*/
+
+nucleic_acid_from.plus.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+
+/*
+
+var quer_db = sqlite("\sqlite\rmkj.db")
+var grid = win.ui.grid(nucleic_acid_from.nucleic_acid_list);//创建数据视图
+grid.setReadonlyColumns(1);//可选设置禁止编辑的列
+grid.setColumns({"结果日期";"检测结果";"检测机构";"检测日期"}); //可选自定义显示列名
+
+*/
+
+var user_id = nucleic_acid_from.nucleic_acid_user_id.text;
+/**
+try{
+	//直接支持常用数据库的 getTable 函数返回的数据格式
+	//var sql = "SELECT inspection_date,citek,inspection_results,result_date FROM tbnucleicacid where user_id = " ++ user_id ++ " ORDER BY inspection_date DESC  LIMIT 10 ";
+	var sql = "SELECT inspection_date,citek,inspection_results,result_date FROM tbnucleicacid where 1 = 1 ORDER BY inspection_date DESC  LIMIT 10 ";
+	var dataTable = quer_db.getTable(sql);
+	//直接让 listview 控件显示数据库的查询结果
+	grid.setTable( dataTable )
+	quer_db.close();
+}
+
+catch(e){
+	quer_db.close();
+}
+**/
+
+
+
+
+
+
+nucleic_acid_from.show();
+win.loopMessage();
+return nucleic_acid_from;
