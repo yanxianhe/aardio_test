@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<project ver="10" name="社区安全管理系统" libEmbed="true" icon="..." ui="win" output="社区安全管理系统.exe" CompanyName="单位名称" FileDescription="社区安全管理系统" LegalCopyright="Copyright (C) 作者 2022" ProductName="社区安全管理系统" InternalName="社区安全管理系统" FileVersion="0.0.0.10" ProductVersion="0.0.0.10" publishDir="/dist/" dstrip="false" local="false" ignored="false">
+<project ver="10" name="社区安全管理系统" libEmbed="true" icon="..." ui="win" output="社区安全管理系统.exe" CompanyName="单位名称" FileDescription="社区安全管理系统" LegalCopyright="Copyright (C) 作者 2022" ProductName="社区安全管理系统" InternalName="社区安全管理系统" FileVersion="0.0.0.12" ProductVersion="0.0.0.12" publishDir="/dist/" dstrip="false" local="false" ignored="false">
 	<file name="main" path="main.aardio"/>
 	<folder name="窗体" path="forms" comment="" embed="true" local="false" ignored="false">
 		<folder name="images" path="forms\images" comment="forms\images">
@@ -26,9 +26,16 @@
 			<file name="user_address_menu.aardio" path="forms\main\user_address_menu.aardio" comment="forms\main\user_address_menu.aardio"/>
 			<file name="user_info_menu.aardio" path="forms\main\user_info_menu.aardio" comment="forms\main\user_info_menu.aardio"/>
 			<file name="date_mmenu.aardio" path="forms\main\date_mmenu.aardio" comment="forms\main\date_mmenu.aardio"/>
+			<file name="内存.aardio" path="forms\main\内存.aardio" comment="forms\main\内存.aardio"/>
 		</folder>
 	</folder>
 	<folder name="sqlite" path="sqlite" comment="sqlite">
 		<file name="rmkj.db" path="sqlite\rmkj.db" comment="sqlite\rmkj.db"/>
+	</folder>
+	<folder name="dll" path="dll" comment="dll">
+		<file name="ID_Fpr.dll" path="dll\ID_Fpr.dll" comment="dll\ID_Fpr.dll"/>
+		<file name="ID_FprCap.dll" path="dll\ID_FprCap.dll" comment="dll\ID_FprCap.dll"/>
+		<file name="ZKMCard.dll" path="dll\ZKMCard.dll" comment="dll\ZKMCard.dll"/>
+		<file name="zkSDTComm.dll" path="dll\zkSDTComm.dll" comment="dll\zkSDTComm.dll"/>
 	</folder>
 </project>

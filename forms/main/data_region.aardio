@@ -75,10 +75,28 @@ region_a1_list = function(){
 		} )
 	}
 }
+
+region_a1_list_id = function(area1_name){
+	if(data_region.region_a1.count){
+		data_region.region_a1.clear();
+	}
+	for rowid,area1_id,area1_name in quer_db.each("SELECT rowid,area1_id,area1_name from tbarea1 where area1_name = '"++ area1_name ++"' ORDER BY id DESC;") {
+		data_region.region_a1.addItem( { 
+			text={area1_name} 
+		} )
+	}
+}
 //初始一级列别
 region_a1_list();
 
 
+
+//清空二级列表
+region_a2_clear = function(){
+	//清空缓存
+	region_a2_GetDispItem_null();
+	data_region.region_a2.clear();	
+}
 // 二级列表
 var imageList = win.imageList(35, 35);
 data_region.region_a2.setImageList( imageList.loadIcon(0x7F00) );
@@ -88,7 +106,6 @@ data_region.region_a2.setImageList( imageList.loadIcon(0x7F00) );
 	二级区域 初始化空虚表项
 */
 region_a2_GetDispItem_null = function(){
-	
 	data_region.region_a2.onGetDispItem = function(item,row,col){
 		return  null; 
 	}
@@ -101,6 +118,7 @@ region_a2_GetDispItem = function(data){
 		return  data[row][col]; 
 	}
 }
+
 /*
  	构建二级区域
 */
@@ -109,8 +127,7 @@ region_a2_list = function(area1_name){
 	var flg = data_region.region_a2.getNextItem(); 
 	if(flg){
 		//清空缓存
-		region_a2_GetDispItem_null();
-		data_region.region_a2.clear();	
+		region_a2_clear();
 	}
 	try{
 		var sql = "select rowid,area2_id,area2_name from tbarea2 where father_id in (select area1_id from tbarea1 where area1_name = '"++ area1_name ++"') ORDER BY id DESC;);"
@@ -148,6 +165,8 @@ data_region.region_a1.onnotify = function(id,code,ptr){
             	    var area1_name = data_region.region_a1.getItemText(nm.iItem,nm.iSubItem);
             		var info =  "选择的区域 :" +  area1_name;
         			data_region.region_a2_static.text = info;
+        			// 一级区域文本框赋值
+        			data_region.region_static_area1_tx_a0.text = area1_name;
 					//构建二级区域
         			region_a2_list(area1_name);
         			
@@ -165,8 +184,12 @@ data_region.region_a2.onnotify = function(id,code,ptr){
     		// 处理点击事件
     		if ( (nm.uChanged & 0x8/*_LVIF_STATE*/) && (nm.uNewState & 0x2/*_LVIS_SELECTED*/) ) {
             	if(data_region.region_a2.selIndex){
-            		var info =  "选择的区域 :" +  data_region.region_a2.getItemText(nm.iItem,nm.iSubItem);
+            	    // 二级区域赋值
+            	    var tmp = data_region.region_a2.getItemText(nm.iItem,nm.iSubItem);
+            		var info =  "选择的区域 :" + tmp;
         			data_region.region_a2_static.text = info;
+        			var tmp = string.split(tmp,"<-->")[2];
+        			data_region.region_static_area2_tx_a0.text = tmp;
         			}
                 }
     	}
@@ -227,23 +250,22 @@ region_ins_sql = function(area1_sql,area2_sql){
 }
 // 查询
 data_region.data_region_query_tb.oncommand = function(id,event){
+	//清空二级区域
+	region_a2_clear();
+	
 	var area1 = data_region.region_static_area1_tx_a0.text;
 	var area2 = data_region.region_static_area2_tx_a0.text;
 	region_a1_list();
+	region_a2_list(area1)
 	if(area1 == 0 and area2 ==0) {
-		data_region.msgbox("查询条件不能为空！")	
+		data_region.msgbox("查询条件不能为空！");
 	}elseif( area1 == 0 ){
 		// 一级区域为空，根据二级区域查询
-		
-	}elseif(area2 == 0){
+		data_region.msgbox("查询条件一级区域不能为空！");
+	}else{
 		// 二级区域为空，根据一级区域查询
-		
-	}else {
-		// 根据一级 二级数据查询
+		region_a1_list_id(area1);
 	}
-	
-	
-	
 }
 // 修改
 data_region.data_region_update_tb.oncommand = function(id,event){
@@ -253,7 +275,6 @@ data_region.data_region_update_tb.oncommand = function(id,event){
 	if(area1 == 0 or area2 ==0) {
 		data_region.msgbox("请查询后选择区域修改！")
 	}else{
-		
 		region_a1_list();	
 	}
 }
@@ -265,7 +286,15 @@ data_region.data_region_delete_tb.oncommand = function(id,event){
 	if(area1 == 0 or area2 ==0) {
 		data_region.msgbox("请查询后选择具体区域删除！")
 	}else{
-		region_a1_list();	
+		var del_db = sqlite("\sqlite\rmkj.db");
+		// 只能删除二级目录
+		var del_sql = "delete from tbarea2 where area2_name = '"++area2++"' and father_id in (select area1_id from tbarea1 where area1_name = '"++area1++"');";
+		del_db.exec(del_sql);
+		del_db.close();
+		// 重新构建
+		region_a1_list();
+		region_a2_list(area1);
+		
 	}	
 }
 // 增加
@@ -314,6 +343,7 @@ data_region.data_region_add_tb.oncommand = function(id,event){
 			}
 		}
 		region_a1_list();
+		region_a2_list(area1)
 	}		
 }
 
