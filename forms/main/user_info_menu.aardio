@@ -107,6 +107,17 @@ var inoculation = winform.user_info_tab.loadForm("\forms\main\inoculation.aardio
 
 // 初始化人员标志
 var user_flg = false;
+//核酸结果列表 动态窗台listview 使用 grid 创建视图 
+nucleic_acid_lists = function(user_id){
+	//动态窗台listview 使用 grid 创建视图
+	var sql = "SELECT result_date,inspection_results,citek,inspection_date FROM tbnucleicacid where user_id = '" ++ user_id ++ "'ORDER BY inspection_date DESC  LIMIT 30 ";
+	var dataTable = quer_db.getTable(sql);
+	var grid = win.ui.grid(nucleic_acid.nucleic_acid_list);//创建数据视图
+	grid.setReadonlyColumns(1);//可选设置禁止编辑的列
+	grid.setColumns({"结果日期";"检测结果";"检测机构";"检测日期"}); //可选自定义显示列名
+	grid.setTable( dataTable );	
+}
+
 
 
 winform.button.oncommand = function(id,event){
@@ -116,7 +127,7 @@ winform.button.oncommand = function(id,event){
 	var rel = quer_db.stepQuery(sql);
 	// 证件号码不存在插入数据
 	if(rel == null){
-
+		nucleic_acid_lists(user_id);
 		user_flg = true;
 	}else {
 		// 姓名
@@ -139,14 +150,8 @@ winform.button.oncommand = function(id,event){
 		// 区域
 		winform.user_info_region_a0.text  = rel['user_region0'];
 		winform.user_info_region_a1.text  = rel['user_region1'];
-		
-		//动态窗台listview 使用 grid 创建视图
-		var sql = "SELECT result_date,inspection_results,citek,inspection_date FROM tbnucleicacid where user_id = '" ++ user_id ++ "'ORDER BY inspection_date DESC  LIMIT 30 ";
-		var dataTable = quer_db.getTable(sql);
-		var grid = win.ui.grid(nucleic_acid.nucleic_acid_list);//创建数据视图
-		grid.setReadonlyColumns(1);//可选设置禁止编辑的列
-		grid.setColumns({"结果日期";"检测结果";"检测机构";"检测日期"}); //可选自定义显示列名
-		grid.setTable( dataTable );
+		nucleic_acid_lists(user_id);
+
 	}
 	
 	

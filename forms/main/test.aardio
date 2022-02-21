@@ -5,7 +5,7 @@ import sqlite;
 /*DSG{{*/
 var winform = win.form(text="搜索人员";right=759;bottom=469;bgcolor=16777215)
 winform.add(
-plus={cls="plus";text="搜索";left=456;top=37;right=555;bottom=67;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF002';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=2};
+plus={cls="plus";text="读身份证";left=456;top=37;right=578;bottom=67;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF002';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=2};
 search_tx_a1={cls="edit";left=68;top=37;right=425;bottom=67;dl=1;dt=1;edge=1;multiline=1;z=1}
 )
 /*}}*/
@@ -21,7 +21,26 @@ winform.plus.skin({
 		disabled=0xFF6D6D6D
 	}
 })
+ReaderId = function(){
 
+	var ID_Fpr_dll = ..raw.loadDll("\dll\ID_Fpr.dll");
+	
+	var ZKMCard_dll = ..raw.loadDll("\dll\ZKMCard.dll");
+
+	var zkSDTComm_dll = ..raw.loadDll("\dll\zkSDTComm.dll");
+	
+	ID_Fpr_version:=ID_Fpr_dll.api("FP_GetVersion","INT(int stdcall)");
+	winform.msgbox(ID_Fpr_version);
+
+	
+/*
+	Syn_OpenPort:=dll.api("SDT_OpenPort","INT(int iport)")//打开端口，成功是1
+	winform.msgbox(Syn_OpenPort);
+*/
+	
+
+
+}
 winform.plus.oncommand = function(id,event){
 	var search = winform.search_tx_a1.text;
 	if(search == 0){
@@ -29,6 +48,7 @@ winform.plus.oncommand = function(id,event){
 		//winform.msgbox("请输入正确的查询内容！")
 		return winform;
 	}else{
+		ReaderId();
 		user_id = winform.search_tx_a1.text;
 		var quer_db = sqlite("\sqlite\rmkj.db")
 		var sql = "select rowid,user_id from tbuser where user_id = '" ++ user_id ++ "' ORDER BY user_id DESC;"
@@ -45,6 +65,8 @@ winform.plus.oncommand = function(id,event){
 	}
 	
 }
+
+
 
 
 winform.show();

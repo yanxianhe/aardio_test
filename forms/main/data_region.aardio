@@ -1,0 +1,322 @@
+import fonts.fontAwesome;
+//虚表
+//相关范例：范例 / 数据库 / sqlite / 虚表
+//下面listview 控件的类名（cls属性）请改为 "vlistview"
+import win.ui;
+import win.imageList;
+import console;
+import sqlite;
+/*DSG{{*/
+data_region = win.form(text="区域维护";right=810;bottom=628;bgcolor=16777215;max=false)
+data_region.add(
+data_region_add_tb={cls="plus";text="增加";left=536;top=85;right=635;bottom=115;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF067';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=11};
+data_region_delete_tb={cls="plus";text="删除";left=391;top=85;right=490;bottom=115;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF014';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=10};
+data_region_query_tb={cls="plus";text="查询";left=79;top=85;right=178;bottom=115;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF002';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=8};
+data_region_update_tb={cls="plus";text="修改";left=236;top=85;right=335;bottom=115;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF01E';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=9};
+region_a1={cls="listview";left=35;top=158;right=258;bottom=542;dl=1;dt=1;edge=1;vscroll=1;z=3};
+region_a2={cls="vlistview";left=274;top=158;right=764;bottom=543;bgcolor=16777215;dl=1;dt=1;edge=1;mode="icon";vscroll=1;z=1};
+region_a2_static={cls="static";left=275;top=126;right=774;bottom=152;dl=1;dt=1;transparent=1;z=2};
+region_static_area1={cls="static";text="一级区域 :";left=111;top=38;right=179;bottom=62;center=1;dl=1;dt=1;transparent=1;z=4};
+region_static_area1_tx_a0={cls="edit";left=183;top=37;right=337;bottom=60;dl=1;dt=1;edge=1;z=6};
+region_static_area2={cls="static";text="二级区域 :";left=427;top=36;right=491;bottom=60;center=1;dl=1;dt=1;transparent=1;z=5};
+region_static_area2_tx_a0={cls="edit";left=498;top=37;right=652;bottom=60;dl=1;dt=1;edge=1;z=7}
+)
+/*}}*/
+
+data_region.data_region_delete_tb.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+data_region.data_region_update_tb.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+data_region.data_region_query_tb.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+// 一级列表
+var quer_db = sqlite("\sqlite\rmkj.db");
+data_region.region_a1.insertColumn("一级区域列表",219);
+/*
+ 	构建一级区域
+*/
+region_a1_list = function(){
+	if(data_region.region_a1.count){
+		data_region.region_a1.clear();
+	}
+	for rowid,area1_id,area1_name in quer_db.each("SELECT rowid,area1_id,area1_name from tbarea1 ORDER BY id DESC;") {
+		data_region.region_a1.addItem( { 
+			text={area1_name} 
+		} )
+	}
+}
+//初始一级列别
+region_a1_list();
+
+
+// 二级列表
+var imageList = win.imageList(35, 35);
+data_region.region_a2.setImageList( imageList.loadIcon(0x7F00) );
+
+
+/*
+	二级区域 初始化空虚表项
+*/
+region_a2_GetDispItem_null = function(){
+	
+	data_region.region_a2.onGetDispItem = function(item,row,col){
+		return  null; 
+	}
+}
+/*
+	二级区域 获取虚表项
+*/
+region_a2_GetDispItem = function(data){
+	data_region.region_a2.onGetDispItem = function(item,row,col){
+		return  data[row][col]; 
+	}
+}
+/*
+ 	构建二级区域
+*/
+region_a2_list = function(area1_name){
+	var data = {};
+	var flg = data_region.region_a2.getNextItem(); 
+	if(flg){
+		//清空缓存
+		region_a2_GetDispItem_null();
+		data_region.region_a2.clear();	
+	}
+	try{
+		var sql = "select rowid,area2_id,area2_name from tbarea2 where father_id in (select area1_id from tbarea1 where area1_name = '"++ area1_name ++"') ORDER BY id DESC;);"
+		
+		for rowid,area2_id,area2_name in quer_db.each(sql) {
+			
+			data_region.region_a2.addItem( { 
+				table.push(data,{ { iImage = 0; text = area1_name ++"--"++ area2_name } }) ;	
+			} )
+		
+		}
+		region_a2_GetDispItem(data);
+	}
+	catch(e){
+		data_region.msgbox(e);
+	}
+
+}
+//指定虚表行数
+//data_region.region_a2.count = 10000;
+
+region_a2_GetDispItem_null();
+
+
+
+
+// 一级级区域
+data_region.region_a1.onnotify = function(id,code,ptr){
+    select(code) {
+    	case  0xFFFFFF9B /*_LVN_ITEMCHANGED*/ {
+    		var nm = data_region.region_a1.getNotifyMessage(code,ptr)
+    		// 处理点击事件
+    		if ( (nm.uChanged & 0x8/*_LVIF_STATE*/) && (nm.uNewState & 0x2/*_LVIS_SELECTED*/) ) {
+            	if(data_region.region_a1.selIndex){
+            	    var area1_name = data_region.region_a1.getItemText(nm.iItem,nm.iSubItem);
+            		var info =  "选择的区域 :" +  area1_name;
+        			data_region.region_a2_static.text = info;
+					//构建二级区域
+        			region_a2_list(area1_name);
+        			
+        			}
+                }
+    	}
+    }
+}
+
+// 二级区域
+data_region.region_a2.onnotify = function(id,code,ptr){
+    select(code) {
+    	case  0xFFFFFF9B /*_LVN_ITEMCHANGED*/ {
+    		var nm = data_region.region_a2.getNotifyMessage(code,ptr)
+    		// 处理点击事件
+    		if ( (nm.uChanged & 0x8/*_LVIF_STATE*/) && (nm.uNewState & 0x2/*_LVIS_SELECTED*/) ) {
+            	if(data_region.region_a2.selIndex){
+            		var info =  "选择的区域 :" +  data_region.region_a2.getItemText(nm.iItem,nm.iSubItem);
+        			data_region.region_a2_static.text = info;
+        			}
+                }
+    	}
+    }
+}
+
+
+
+
+region1_check = function(area1){
+	var region_check_db = sqlite("\sqlite\rmkj.db");
+	var sql = "select id from tbarea1 where area1_name = '"++area1++"' ORDER BY id DESC LIMIT 1;";
+	var nu = region_check_db.stepQuery(sql);
+	if(nu == null){
+		return false; 
+	}else {
+		return  true; 
+	}
+	region_check_db.close();
+}
+region2_check = function(area2){
+	var region_check_db = sqlite("\sqlite\rmkj.db");
+	var sql = "select id from tbarea2 where area2_name = '"++area2++"' ORDER BY id DESC LIMIT 1;";
+	var nu = region_check_db.stepQuery(sql);
+	region_check_db.close();
+	if(nu == null){
+		return false; 
+	}else {
+		return  true; 
+	}
+}
+
+region1_area1_id = function(area1_name){
+	var region1_area1 = sqlite("\sqlite\rmkj.db");
+	var sql = "select area1_id from tbarea1 where area1_name = '"++area1_name++"' ORDER BY id DESC LIMIT 1;";
+	var rel = region1_area1.stepQuery(sql);
+	if(rel == null){
+		return false; 
+	}else {
+		return rel['area1_id']; 
+	}
+	region1_area1.close();
+}
+
+
+region_ins_sql = function(area1_sql,area2_sql){
+	var ins_sql = sqlite("\sqlite\rmkj.db");
+	try{
+		ins_sql.exec(area1_sql);
+		if(area2_sql != null){
+			ins_sql.exec(area2_sql);
+		}
+		ins_sql.close();
+	}
+	catch(e){
+		ins_sql.close();
+	}	
+}
+// 查询
+data_region.data_region_query_tb.oncommand = function(id,event){
+	var area1 = data_region.region_static_area1_tx_a0.text;
+	var area2 = data_region.region_static_area2_tx_a0.text;
+	region_a1_list();
+	if(area1 == 0 and area2 ==0) {
+		data_region.msgbox("查询条件不能为空！")	
+	}elseif( area1 == 0 ){
+		// 一级区域为空，根据二级区域查询
+		
+	}elseif(area2 == 0){
+		// 二级区域为空，根据一级区域查询
+		
+	}else {
+		// 根据一级 二级数据查询
+	}
+	
+	
+	
+}
+// 修改
+data_region.data_region_update_tb.oncommand = function(id,event){
+	var area1 = data_region.region_static_area1_tx_a0.text;
+	var area2 = data_region.region_static_area2_tx_a0.text;
+	
+	if(area1 == 0 or area2 ==0) {
+		data_region.msgbox("请查询后选择区域修改！")
+	}else{
+		
+		region_a1_list();	
+	}
+}
+//删除
+data_region.data_region_delete_tb.oncommand = function(id,event){
+	var area1 = data_region.region_static_area1_tx_a0.text;
+	var area2 = data_region.region_static_area2_tx_a0.text;
+	
+	if(area1 == 0 or area2 ==0) {
+		data_region.msgbox("请查询后选择具体区域删除！")
+	}else{
+		region_a1_list();	
+	}	
+}
+// 增加
+data_region.data_region_add_tb.oncommand = function(id,event){
+	var area1 = data_region.region_static_area1_tx_a0.text;
+	var area2 = data_region.region_static_area2_tx_a0.text;
+	var quer_db = sqlite("\sqlite\rmkj.db");
+	
+
+	if(area1 == 0 or area2 ==0) {
+		data_region.msgbox("请填写正确的一级 二级区域！");
+	}else{
+		// 判断一级区域是否存在
+		if (region1_check(area1)){
+			// 判断二级区域是否存在
+			if (region2_check(area2)){
+				data_region.msgbox("该区域已经存在，请查询！");
+			}else{
+				//添加二级区域
+				var area2_father_id = region1_area1_id(area1);
+				var area2_id = "22" ++ string.right(area2_father_id,8,true);
+				var ins_sql2 = "INSERT INTO tbarea2 (area2_id,area2_name,father_id) VALUES (" ++ area2_id ++ "," ++ "'" ++ area2 ++ "'" ++","++ area2_father_id++ ");";
+				region_ins_sql(ins_sql2,null);
+			}
+		}else {
+			var sql = "select id from tbarea1 ORDER BY id DESC LIMIT 1;";
+			var rel = quer_db.stepQuery(sql);
+			var ins_sql = "";
+			var ins_sql2 = "";
+			if(rel == null){
+				var tmp = 1;
+				var area1_id = 1100000000 + tmp ;
+				var area2_id = 2200000000 + tmp  ;
+				var area2_father_id = area1_id;
+				ins_sql = "INSERT INTO tbarea1 (area1_id,area1_name) VALUES (" ++ area1_id ++ "," ++ "'" ++ area1 ++ "'" ++ ");";
+				ins_sql2 = "INSERT INTO tbarea2 (area2_id,area2_name,father_id) VALUES (" ++ area2_id ++ "," ++ "'" ++ area2 ++ "'" ++","++ area2_father_id++ ");";
+				region_ins_sql(ins_sql,ins_sql2);
+			}else{
+				var tmp = rel['id'];
+				var area1_id = 1100000000 + tmp ;
+				var area2_id = 2200000000 + tmp  ;
+				var area2_father_id = area1_id;
+				ins_sql = "INSERT INTO tbarea1 (area1_id,area1_name) VALUES (" ++ area1_id ++ "," ++ "'" ++ area1 ++ "'" ++ ");";
+				ins_sql2 = "INSERT INTO tbarea2 (area2_id,area2_name,father_id) VALUES (" ++ area2_id ++ "," ++ "'" ++ area2 ++ "'" ++","++ area2_father_id++ ");";
+				region_ins_sql(ins_sql,ins_sql2);
+			}
+		}
+		region_a1_list();
+	}		
+}
+
+data_region.show();
+win.loopMessage();
+return data_region;

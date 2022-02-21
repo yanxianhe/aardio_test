@@ -1,6 +1,6 @@
 import win.ui;
 /*DSG{{*/
-var winform = win.form(text="接种信息";right=759;bottom=469;bgcolor=16777215)
+var winform = win.form(text="接种信息";right=759;bottom=469;bgcolor=16777215;max=false)
 winform.add(
 inoculation_user_id={cls="edit";text="隐藏身份";left=14;top=8;right=174;bottom=34;dl=1;dt=1;edge=1;hide=1;z=2};
 static={cls="static";text="接种日期";left=46;top=59;right=101;bottom=75;dl=1;dt=1;notify=1;transparent=1;z=1}
