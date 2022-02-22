@@ -14,7 +14,7 @@ vvaccines_listview_a0={cls="listview";left=16;top=89;right=748;bottom=454;dl=1;d
 /*}}*/
 
 var quer_db = sqlite("\sqlite\rmkj.db");
-var tow_show = false;
+
 vaccionesform.plus2.skin({
 	background={
 		default=0x668FB2B0;
@@ -86,12 +86,10 @@ vvaccines_lists = function(){
 vaccionesform.plus2.oncommand = function(id,event){
 	var frmChild = vaccionesform.loadForm("\forms\main\add_vacciones.aardio");
 	frmChild.show(true);
-	tow_show = true;
+
 }
 
-if (tow_show){
-	vvaccines_lists();	
-}
+
 
 vvaccines_lists();
 

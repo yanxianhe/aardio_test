@@ -106,7 +106,6 @@ addvaccionesform.plus.oncommand = function(id,event){
 		}
 		if(s_flg){
 			addvaccionesform.static8.text = "疫苗添加成功！";
-			
 		}else {
 			addvaccionesform.static8.text = "疫苗添加失败,请重新添加.";
 		}
