@@ -8,11 +8,11 @@ import win.ui.menu;
 /*DSG{{*/
 var winform = win.form(text="用户信息";right=816;bottom=480;bgcolor=16777215;max=false)
 winform.add(
-button={cls="plus";text="读证件";left=313;top=181;right=381;bottom=203;bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=2}};iconText='\uF002';textPadding={left=16};z=23};
+button={cls="plus";text="读证件";left=316;top=181;right=384;bottom=203;bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=2}};iconText='\uF002';textPadding={left=16};z=23};
 groupbox={cls="groupbox";left=9;top=37;right=391;bottom=415;ah=1;aw=1;dl=1;dt=1;edge=1;z=1};
 picturebox={cls="picturebox";left=268;top=50;right=355;bottom=129;dl=1;dt=1;notify=1;z=16};
 static={cls="static";text="性别";left=37;top=94;right=66;bottom=113;dl=1;dt=1;transparent=1;z=3};
-static2={cls="static";text="民族";left=138;top=92;right=181;bottom=120;dl=1;dt=1;transparent=1;z=4};
+static2={cls="static";text="民族";left=129;top=86;right=172;bottom=114;align="center";center=1;dl=1;dt=1;transparent=1;z=4};
 static3={cls="static";text="出生";left=35;top=120;right=65;bottom=139;dl=1;dt=1;transparent=1;z=5};
 static4={cls="static";text="姓名";left=37;top=67;right=70;bottom=80;dl=1;dt=1;transparent=1;z=2};
 static5={cls="static";text="地址";left=35;top=150;right=70;bottom=174;dl=1;dt=1;transparent=1;z=6};
@@ -22,15 +22,15 @@ static8={cls="static";text="签发机关";left=37;top=253;right=100;bottom=274;d
 static9={cls="static";text="所属区域：";left=37;top=292;right=110;bottom=310;dl=1;dt=1;transparent=1;z=10};
 update_bt={cls="plus";text="变更区域";left=303;top=317;right=384;bottom=341;bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(name='FontAwesome');padding={left=4}};iconText='\uF021';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=15};z=27};
 user_end_date_bx={cls="datetimepick";left=222;top=216;right=314;bottom=236;dl=1;dt=1;edge=1;z=19};
-user_info_address_tx_a0={cls="edit";left=67;top=144;right=381;bottom=174;dl=1;dt=1;edge=1;multiline=1;z=15};
-user_info_birthday_box={cls="datetimepick";left=70;top=121;right=175;bottom=141;dl=1;dt=1;edge=1;z=14};
+user_info_address_tx_a0={cls="edit";left=67;top=147;right=381;bottom=169;dl=1;dt=1;edge=1;multiline=1;z=15};
+user_info_birthday_box={cls="datetimepick";left=70;top=120;right=175;bottom=140;dl=1;dt=1;edge=1;z=14};
 user_info_grep_tx_a0={cls="edit";left=97;top=249;right=271;bottom=276;dl=1;dt=1;edge=1;z=20};
 user_info_id_tx_a0={cls="edit";left=105;top=181;right=310;bottom=206;dl=1;dt=1;edge=1;z=17};
 user_info_name_tx_a0={cls="edit";text="输入姓名";left=70;top=62;right=160;bottom=84;dl=1;dt=1;edge=1;z=11};
-user_info_nation_box_a0={cls="combobox";left=175;top=87;right=227;bottom=107;dl=1;dt=1;edge=1;items={};mode="dropdown";z=13};
+user_info_nation_box_a0={cls="combobox";left=172;top=90;right=259;bottom=110;dl=1;dt=1;edge=1;items={};mode="dropdown";vscroll=1;z=13};
 user_info_region_a0={cls="combobox";left=35;top=317;right=144;bottom=343;dl=1;dt=1;edge=1;items={};mode="dropdown";z=21};
 user_info_region_a1={cls="combobox";left=159;top=317;right=296;bottom=343;dl=1;dt=1;edge=1;items={};mode="dropdown";z=22};
-user_info_sex_box={cls="combobox";left=71;top=90;right=124;bottom=110;dl=1;dt=1;edge=1;items={};mode="dropdown";z=12};
+user_info_sex_box={cls="combobox";left=71;top=90;right=123;bottom=110;dl=1;dt=1;edge=1;items={};mode="dropdown";vscroll=1;z=12};
 user_info_submit_a0={cls="plus";text="保存";left=446;top=421;right=545;bottom=451;align="left";bgcolor=-5197169;dr=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF00C';notify=1;textPadding={left=39};z=25};
 user_info_tab={cls="tab";left=396;top=22;right=805;bottom=415;ah=1;aw=1;bgcolor=16777215;dr=1;dt=1;edge=1;z=26};
 user_info_update_a0={cls="plus";text="取消";left=245;top=421;right=344;bottom=451;align="left";bgcolor=-5197169;dl=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF021';notify=1;textPadding={left=39};z=24};
@@ -79,13 +79,13 @@ var quer_db = sqlite("\sqlite\rmkj.db");
 try{
 	
 	// 性别
-	for rowid,sex_id,sex_name in quer_db.each("SELECT rowid,sex_id,sex_name from tbsex ORDER BY sex_id DESC LIMIT 2;") {
+	for rowid,sex_id,sex_name in quer_db.each("SELECT rowid,sex_id,sex_name from dictbsex ORDER BY sex_id DESC LIMIT 2;") {
 		winform.user_info_sex_box.add(sex_name);
 		winform.user_info_sex_box.selText = sex_name;
 	}
 	
 	// 民族
-	for rowid,nation_id,nation_name in quer_db.each("SELECT rowid,nation_id,nation_name from tbnation ORDER BY nation_id DESC LIMIT 100;") {
+	for rowid,nation_id,nation_name in quer_db.each("SELECT rowid,nation_id,nation_name from dictbnation ORDER BY nation_id DESC LIMIT 100;") {
 		winform.user_info_nation_box_a0.add(nation_name);
 		winform.user_info_nation_box_a0.selText = nation_name;
 	}

@@ -1,42 +1,100 @@
-//虚表
-//相关范例：范例 / 数据库 / sqlite / 虚表
-//下面listview 控件的类名（cls属性）请改为 "vlistview"
+import fonts.fontAwesome;
+import win.ui.grid;
 import win.ui;
+import console;
+import sqlite;
 /*DSG{{*/
-vaccinesform = win.form(text="虚表";right=805;bottom=610)
-vaccinesform.add(
-region_a1={cls="vlistview";left=27;top=63;right=498;bottom=564;db=1;dl=1;dr=1;dt=1;edge=1;mode="icon";vscroll=1;z=1};
-static={cls="static";text="Static";left=30;top=30;right=495;bottom=55;transparent=1;z=2}
+var vaccionesform = win.form(text="疫苗维护";right=772;bottom=482;bgcolor=16777215;max=false)
+vaccionesform.add(
+plus={cls="plus";text="搜索";left=258;top=29;right=357;bottom=59;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF002';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=2};
+plus2={cls="plus";text="添加";left=405;top=28;right=504;bottom=58;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF067';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=3};
+search_tx_a1={cls="edit";left=43;top=31;right=216;bottom=61;dl=1;dt=1;edge=1;z=1};
+vvaccines_listview_a0={cls="listview";left=16;top=89;right=748;bottom=454;dl=1;dt=1;edge=1;hscroll=1;vscroll=1;z=4}
 )
 /*}}*/
 
-import win.imageList;
-var imageList = win.imageList(32, 32); 
-vaccinesform.region_a1.setImageList( imageList.loadIcon(0x7F00) );
-var data = {};
-for(i=1;10000;1){
-	table.push(data,{ { iImage = 0; text = i } })
+var quer_db = sqlite("\sqlite\rmkj.db");
+var tow_show = false;
+vaccionesform.plus2.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+vaccionesform.plus.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+
+// 查询
+vaccionesform.plus.oncommand = function(id,event){
+	var search = vaccionesform.search_tx_a1.text;
+	if(search == 0){
+		//console.log("请输入正确的查询！")
+		vvaccines_lists();
+	}else{
+		// 查询结果
+		vaccines_lists(search);
+		
+		
+		
+	}
+	
 }
 
-//指定虚表行数
-vaccinesform.region_a1.count = 1000;
 
-//获取虚表项
-vaccinesform.region_a1.onGetDispItem = function(item,row,col){
-	return  data[row][col]; 
+vaccines_lists = function(search){
+	//动态窗台listview 使用 grid 创建视图
+	var sql = "SELECT rowid,vaccines_name,batch_number,manufacturer,validity_date,vac_dosage,specifications,inventory FROM tbvaccines where vaccines_name '"++ search ++"'  ORDER BY rowid  LIMIT 1000 ";
+	var dataTable = quer_db.getTable(sql);
+	var grid = win.ui.grid(vaccionesform.vvaccines_listview_a0);//创建数据视图
+	for(i=1;8;1){
+		grid.setReadonlyColumns(i);//可选设置禁止编辑的列
+	}
+	grid.setColumns({"序号";"疫苗名称";"批次号";"生产企业";"有效期";"剂型";"规格";"库存"}); //可选自定义显示列名
+	grid.setTable( dataTable );	
+}
+ 
+// 查询列表
+vvaccines_lists = function(){
+	//动态窗台listview 使用 grid 创建视图
+	var sql = "SELECT rowid,vaccines_name,batch_number,manufacturer,validity_date,vac_dosage,specifications,inventory FROM tbvaccines  ORDER BY rowid  LIMIT 1000 ";
+	var dataTable = quer_db.getTable(sql);
+	var grid = win.ui.grid(vaccionesform.vvaccines_listview_a0);//创建数据视图
+	for(i=1;8;1){
+		grid.setReadonlyColumns(i);//可选设置禁止编辑的列
+	}
+	grid.setColumns({"序号";"疫苗名称";"批次号";"生产企业";"有效期";"剂型";"规格";"库存"}); //可选自定义显示列名
+	grid.setTable( dataTable );	
+}
+// 增加
+
+vaccionesform.plus2.oncommand = function(id,event){
+	var frmChild = vaccionesform.loadForm("\forms\main\add_vacciones.aardio");
+	frmChild.show(true);
+	tow_show = true;
 }
 
-vaccinesform.region_a1.onnotify = function(id,code,ptr){
-    select(code) {
-    	case  0xFFFFFF9B/*_LVN_ITEMCHANGED*/ {
-    		var nm = vaccinesform.region_a1.getNotifyMessage(code,ptr)
-    		if(vaccinesform.region_a1.selIndex){
-        		vaccinesform.static.text = "选中了" +  vaccinesform.region_a1.getItemText(nm.iItem,nm.iSubItem)
-        	}
-    	}
-    }
+if (tow_show){
+	vvaccines_lists();	
 }
 
-vaccinesform.show();
+vvaccines_lists();
+
+vaccionesform.show();
 win.loopMessage();
-return vaccinesform;
+return vaccionesform;

@@ -23,6 +23,18 @@ region_static_area2_tx_a0={cls="edit";left=498;top=37;right=652;bottom=60;dl=1;d
 )
 /*}}*/
 
+data_region.data_region_add_tb.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
 data_region.data_region_delete_tb.skin({
 	background={
 		default=0x668FB2B0;
@@ -258,11 +270,13 @@ data_region.data_region_query_tb.oncommand = function(id,event){
 	region_a1_list();
 	region_a2_list(area1)
 	if(area1 == 0 and area2 ==0) {
-		data_region.msgbox("查询条件不能为空！");
+		region_a1_list();
+		region_a2_GetDispItem_null();
 	}elseif( area1 == 0 ){
 		// 一级区域为空，根据二级区域查询
 		data_region.msgbox("查询条件一级区域不能为空！");
 	}else{
+		data_region.region_static_area2_tx_a0.text = "";
 		// 二级区域为空，根据一级区域查询
 		region_a1_list_id(area1);
 	}

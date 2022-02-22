@@ -1,0 +1,121 @@
+import fonts.fontAwesome;
+import win.ui;
+import sqlite;
+import console;
+/*DSG{{*/
+var addvaccionesform = win.form(text="添加疫苗";right=401;bottom=443;max=false;min=false;mode="popup")
+addvaccionesform.add(
+batch_number_tx={cls="edit";left=159;top=66;right=319;bottom=90;dl=1;dt=1;edge=1;multiline=1;tabstop=1;z=4};
+inventory_tx={cls="edit";left=159;top=267;right=319;bottom=291;dl=1;dt=1;edge=1;tabstop=1;z=12};
+manufacturer_tx={cls="edit";left=159;top=107;right=319;bottom=130;dl=1;dt=1;edge=1;tabstop=1;z=6};
+plus={cls="plus";text="增加";left=162;top=366;right=261;bottom=396;align="left";bgcolor=-5197169;font=LOGFONT(h=-16);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF067';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=13};
+specifications_tx={cls="edit";left=159;top=227;right=319;bottom=251;dl=1;dt=1;edge=1;tabstop=1;z=10};
+static={cls="static";text="疫苗名称";left=58;top=25;right=141;bottom=53;align="center";center=1;dl=1;dt=1;transparent=1;z=1};
+static2={cls="static";text="批次号";left=53;top=66;right=136;bottom=97;align="center";center=1;dl=1;dt=1;transparent=1;z=3};
+static3={cls="static";text="生产企业";left=58;top=107;right=141;bottom=134;align="center";center=1;dl=1;dt=1;transparent=1;z=5};
+static4={cls="static";text="有效期";left=57;top=150;right=135;bottom=171;align="center";center=1;dl=1;dt=1;transparent=1;z=7};
+static5={cls="static";text="剂型";left=48;top=188;right=132;bottom=213;align="center";center=1;dl=1;dt=1;notify=1;transparent=1;z=8};
+static6={cls="static";text="规格";left=48;top=229;right=132;bottom=254;align="center";center=1;dl=1;dt=1;notify=1;transparent=1;z=9};
+static7={cls="static";text="库存";left=48;top=269;right=132;bottom=294;align="center";center=1;dl=1;dt=1;notify=1;transparent=1;z=11};
+static8={cls="static";left=84;top=305;right=333;bottom=341;align="center";center=1;transparent=1;z=16};
+vac_dosage_tx={cls="combobox";left=159;top=187;right=319;bottom=211;dl=1;dt=1;edge=1;items={};mode="dropdown";z=15};
+vaccines_name_tx={cls="edit";left=159;top=27;right=319;bottom=50;dl=1;dt=1;edge=1;multiline=1;tabstop=1;z=2};
+validity_date_tx={cls="datetimepick";left=159;top=150;right=319;bottom=170;dl=1;dt=1;edge=1;tabstop=1;z=14}
+)
+/*}}*/
+
+addvaccionesform.plus.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+var quer_db = sqlite("\sqlite\rmkj.db");
+
+
+
+var s_flg = false;
+
+
+
+vac_dosage_list = function(){
+	try{
+		// 剂型
+		for rowid,vac_dosage_id,vac_dosage_name in quer_db.each("select rowid,vac_dosage_id,vac_dosage_name from dictbvacdosage ORDER BY vac_dosage_id;") {
+			addvaccionesform.vac_dosage_tx.add(vac_dosage_name);
+			addvaccionesform.vac_dosage_tx.selText = vac_dosage_name;
+		}
+	}
+	catch(e){
+		addvaccionesform.msgbox(e)
+	}	
+}
+// 是否存在
+quer_vacciones = function(vaccines_name){
+	var sql = "select rowid,vaccines_name,batch_number,manufacturer,validity_date,vac_dosage,specifications,inventory from tbvaccines where vaccines_name = '"++vaccines_name++"' limit 1;";
+	var rel = quer_db.stepQuery(sql);
+	return rel; 
+	
+}
+
+vac_dosage_list();
+
+
+addvaccionesform.plus.oncommand = function(id,event){
+
+ 	//"疫苗名称"
+	var vaccines_name = addvaccionesform.vaccines_name_tx.text
+	//"批次号"
+	var batch_number = addvaccionesform.batch_number_tx.text
+	//"生产企业"
+	var manufacturer = addvaccionesform.manufacturer_tx.text
+	//"有效期"
+	var validity_date = addvaccionesform.validity_date_tx.text
+	//"剂型"
+	var vac_dosage = addvaccionesform.vac_dosage_tx.text
+	//"规格"
+	var specifications = addvaccionesform.specifications_tx.text
+	//"库存"
+	var inventory = addvaccionesform.inventory_tx.text
+	
+	if (quer_vacciones(vaccines_name) == null) {
+		
+		try{
+			var ins_db = sqlite("\sqlite\rmkj.db");
+			var cmd = ins_db.prepare("REPLACE INTO tbvaccines VALUES (@vaccines_name,@batch_number,@manufacturer,@validity_date,@vac_dosage,@specifications,@inventory);") 
+			cmd.step(  
+				vaccines_name = vaccines_name;
+				batch_number = batch_number;
+				manufacturer = manufacturer;
+				validity_date = validity_date;
+				vac_dosage = vac_dosage;
+				specifications = specifications;
+				inventory = inventory;
+			)
+			ins_db.close();
+			s_flg = true;
+		}
+		catch(e){
+			ins_db.close();
+		}
+		if(s_flg){
+			addvaccionesform.static8.text = "疫苗添加成功！";
+			
+		}else {
+			addvaccionesform.static8.text = "疫苗添加失败,请重新添加.";
+		}
+	}else{
+		addvaccionesform.static8.text = "疫苗已经存在了！";
+	}
+	
+}
+
+addvaccionesform.show();
+win.loopMessage();
+return addvaccionesform;

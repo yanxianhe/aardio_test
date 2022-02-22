@@ -35,6 +35,8 @@ winform.region_bt.skin({
 
 
 
+
+
 // 区域维护
 winform.region_bt.oncommand = function(id,event){
 	var region_frmChild = winform.custom.loadForm("\forms\main\data_region.aardio");
