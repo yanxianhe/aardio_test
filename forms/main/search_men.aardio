@@ -88,8 +88,6 @@ winform.plus.skin({
 
 var quer_db = sqlite("\sqlite\rmkj.db");
 
-
-var quer_db = sqlite("\sqlite\rmkj.db");
 try{
 	
 	// 性别

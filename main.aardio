@@ -13,7 +13,7 @@ navBar={cls="bkplus";left=0;top=38;right=83;bottom=682;bgcolor=8421504;db=1;dl=1
 rm_date_menu={cls="plus";text="数据维护";left=0;top=287;right=79;bottom=367;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={font=LOGFONT(h=-37;name='FontAwesome');padding={bottom=20}};iconText='\uF0AD';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=10};
 rm_search_menu={cls="plus";text="搜索人员";left=0;top=204;right=80;bottom=284;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={font=LOGFONT(h=-37;name='FontAwesome');padding={bottom=20}};iconText='\uF002';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=9};
 rm_sys_menu={cls="plus";text="系统设置";left=0;top=371;right=79;bottom=451;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={font=LOGFONT(h=-37;name='FontAwesome');padding={bottom=20}};iconText='\uF013';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=8};
-rm_user_address_menu={cls="plus";text="地址管理";left=1;top=127;right=80;bottom=207;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={font=LOGFONT(h=-37;name='FontAwesome');padding={bottom=20}};iconText='\uF015';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=5};
+rm_user_address_menu={cls="plus";text="区域拓扑";left=1;top=127;right=80;bottom=207;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={font=LOGFONT(h=-37;name='FontAwesome');padding={bottom=20}};iconText='\uF015';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=5};
 rm_user_info_menu={cls="plus";text="人员信息";left=0;top=48;right=80;bottom=128;bkBottom=3;bkLeft=7;bkRight=8;bkTop=2;border={color=-65536};color=16777215;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={font=LOGFONT(h=-37;name='FontAwesome');padding={bottom=20}};iconText='\uF007';notify=1;textPadding={bottom=10};valign="bottom";x=0.5;y=0.2;z=3};
 titleBar={cls="bkplus";left=0;top=0;right=1022;bottom=38;bgcolor=6318930;dl=1;dr=1;dt=1;forecolor=16777215;linearGradient=180;z=2}
 )
@@ -74,6 +74,10 @@ var login_from = mainForm.loadForm("\forms\login\login.aardio");
 
 login_from.show(true);
 
+// 暴力删除进程
+mainForm.onClose = function(hwnd,message,wParam,lParam){
+    ::Kernel32.ExitProcess(0)
+}
 win.loopMessage();
 mainForm.show();
 return win.loopMessage();

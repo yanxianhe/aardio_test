@@ -3,7 +3,6 @@ import win.ui;
 var winform = win.form(text="地址管理";right=939;bottom=772;bgcolor=16777215)
 winform.add(
 custom={cls="custom";left=148;top=11;right=921;bottom=45;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=4};
-listview={cls="listview";left=204;top=169;right=427;bottom=424;edge=1;z=5};
 static={cls="static";left=139;top=7;right=140;bottom=757;bgcolor=16752414;clip=1;db=1;dl=1;dt=1;z=3};
 strip1={cls="plus";text="1号区域";left=31;top=34;right=139;bottom=63;bgcolor=16752414;clip=1;dl=1;dt=1;z=1};
 strip2={cls="plus";text="1号区域";left=31;top=63;right=139;bottom=92;bgcolor=16752414;clip=1;dl=1;dt=1;z=2}
