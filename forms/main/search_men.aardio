@@ -2,13 +2,77 @@ import fonts.fontAwesome;
 import win.ui;
 import console;
 import sqlite;
+import win.ui.grid;
 /*DSG{{*/
-var winform = win.form(text="搜索人员";right=759;bottom=469;bgcolor=16777215)
+var winform = win.form(text="搜索人员";right=770;bottom=517;bgcolor=16777215)
 winform.add(
-plus={cls="plus";text="搜索";left=456;top=37;right=555;bottom=67;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF002';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=2};
-search_tx_a1={cls="edit";left=68;top=37;right=425;bottom=67;dl=1;dt=1;edge=1;z=1}
+inoculation_list={cls="listview";left=284;top=108;right=747;bottom=275;aw=1;dl=1;dt=1;edge=1;vscroll=1;z=16};
+nucleic_acid_list={cls="listview";left=284;top=324;right=747;bottom=494;ah=1;aw=1;dl=1;dt=1;edge=1;vscroll=1;z=17};
+picturebox={cls="picturebox";left=123;top=77;right=198;bottom=133;dl=1;dt=1;z=13};
+plus={cls="plus";text="搜索";left=512;top=24;right=611;bottom=54;align="left";bgcolor=-5197169;dr=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=20}};iconText='\uF002';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=39};z=2};
+plus2={cls="plus";text="校验码";left=141;top=477;right=209;bottom=498;align="left";dl=1;dt=1;font=LOGFONT(h=-11);iconStyle={align="left";font=LOGFONT(h=-10;name='FontAwesome');padding={left=4}};iconText='\uF110';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=18};z=14};
+plus3={cls="plus";text="编辑";left=213;top=477;right=265;bottom=498;align="left";bgcolor=-5197169;dl=1;dt=1;font=LOGFONT(h=-11);iconStyle={align="left";font=LOGFONT(h=-10;name='FontAwesome');padding={left=8}};iconText='\uF021';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=16};z=15};
+plus4={cls="plus";text="接种信息";left=284;top=78;right=359;bottom=106;border={bottom=1;color=-6908266};dl=1;dt=1;editable=1;font=LOGFONT(h=-13);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={top=6;bottom=2};z=18};
+plus5={cls="plus";text="核酸记录";left=284;top=292;right=360;bottom=319;border={bottom=1;color=-6908266};dl=1;dt=1;editable=1;font=LOGFONT(h=-13);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={top=6;bottom=2};z=19};
+search_address={cls="plus";left=89;top=209;right=242;bottom=235;align="left";border={bottom=1;color=-6908266};dl=1;dt=1;editable="edit";font=LOGFONT(h=-11);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=2;top=2;right=2;bottom=2};z=22};
+search_name={cls="plus";left=87;top=275;right=241;bottom=301;align="left";border={bottom=1;color=-6908266};dl=1;dt=1;editable="edit";font=LOGFONT(h=-11);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=2;top=2;right=2;bottom=2};z=24};
+search_tx_a1={cls="edit";left=124;top=24;right=481;bottom=54;dl=1;dr=1;dt=1;edge=1;z=1};
+search_user_birthday={cls="datetimepick";left=87;top=248;right=171;bottom=268;dl=1;dt=1;edge=1;font=LOGFONT(h=-11);z=23};
+search_user_grep={cls="plus";left=87;top=348;right=241;bottom=374;align="left";border={bottom=1;color=-6908266};dl=1;dt=1;editable="edit";font=LOGFONT(h=-11);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=2;top=2;right=2;bottom=2};z=27};
+search_user_id={cls="plus";left=89;top=178;right=241;bottom=204;align="left";border={bottom=1;color=-6908266};dl=1;dt=1;editable="edit";font=LOGFONT(h=-11);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=2;top=2;right=2;bottom=2};z=21};
+search_user_nation={cls="combobox";left=160;top=318;right=247;bottom=338;dl=1;dt=1;edge=1;font=LOGFONT(h=-11);items={};mode="dropdownlist";vscroll=1;z=26};
+search_user_sex={cls="combobox";left=71;top=318;right=116;bottom=338;dl=1;dt=1;edge=1;font=LOGFONT(h=-11);items={};mode="dropdownlist";z=25};
+static={cls="static";text="证件类型";left=16;top=147;right=83;bottom=173;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=3};
+static10={cls="static";text="头像";left=24;top=97;right=91;bottom=122;center=1;dl=1;dt=1;transparent=1;z=12};
+static11={cls="static";text="所属区域";left=14;top=410;right=83;bottom=435;align="center";center=1;font=LOGFONT(h=-11);transparent=1;z=30};
+static2={cls="static";text="证件号码";left=16;top=180;right=83;bottom=207;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=4};
+static3={cls="static";text="户籍地址";left=16;top=212;right=83;bottom=238;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=5};
+static4={cls="static";text="出生日期";left=16;top=244;right=83;bottom=272;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=6};
+static5={cls="static";text="中文名称";left=16;top=277;right=83;bottom=308;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=7};
+static6={cls="static";text="性别";left=15;top=315;right=60;bottom=343;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=8};
+static7={cls="static";text="民族";left=117;top=312;right=162;bottom=343;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=9};
+static8={cls="static";text="签发机关";left=16;top=345;right=83;bottom=375;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=10};
+static9={cls="static";text="有效日期";left=15;top=382;right=82;bottom=406;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=11};
+user_end_date={cls="datetimepick";left=180;top=384;right=265;bottom=404;dl=1;dt=1;edge=1;font=LOGFONT(h=-11);z=29};
+user_id_type={cls="plus";text="居民身份证";left=89;top=143;right=241;bottom=169;align="left";border={bottom=1;color=-6908266};dl=1;dt=1;font=LOGFONT(h=-11);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=2;top=2;right=2;bottom=2};valign="top";z=20};
+user_info_region_a0={cls="combobox";left=27;top=440;right=117;bottom=460;edge=1;items={};mode="dropdown";z=31};
+user_info_region_a1={cls="combobox";left=136;top=440;right=267;bottom=460;edge=1;items={};mode="dropdown";z=32};
+user_start_date={cls="datetimepick";left=85;top=385;right=168;bottom=405;dl=1;dt=1;edge=1;font=LOGFONT(h=-11);z=28}
 )
 /*}}*/
+
+winform.plus5.skin({
+	color={
+		active=0xFF00FF00;
+		default=0xFF000080;
+		disabled=0xFF6D6D6D;
+		hover=0xFFFF0000
+	}
+})
+
+winform.plus3.skin({
+	background={
+		default=0x668FB2B0;
+		disabled=0xFFCCCCCC;
+		hover=0xFF928BB3
+	};
+	color={
+		default=0xFF000000;
+		disabled=0xFF6D6D6D
+	}
+})
+
+winform.plus2.skin({
+	foreground={
+		active=0xFFF78987
+	};
+	color={
+		active=0xFF00FF00;
+		default=0xFF3C3C3C;
+		disabled=0xFF6D6D6D;
+		hover=0xFFFF0000
+	}
+})
 
 winform.plus.skin({
 	background={
@@ -22,6 +86,108 @@ winform.plus.skin({
 	}
 })
 
+var quer_db = sqlite("\sqlite\rmkj.db");
+
+
+var quer_db = sqlite("\sqlite\rmkj.db");
+try{
+	
+	// 性别
+	for rowid,sex_id,sex_name in quer_db.each("SELECT rowid,sex_id,sex_name from dictbsex ORDER BY sex_id DESC LIMIT 2;") {
+		winform.search_user_sex.add(sex_name);
+		winform.search_user_sex.selText = sex_name;
+	}
+	
+	// 民族
+	for rowid,nation_id,nation_name in quer_db.each("SELECT rowid,nation_id,nation_name from dictbnation ORDER BY nation_id DESC LIMIT 100;") {
+		winform.search_user_nation.add(nation_name);
+		winform.search_user_nation.selText = nation_name;
+	}
+	// 一级区域
+	for rowid,area1_name in quer_db.each("SELECT rowid,area1_name from tbarea1  ORDER BY id DESC ;") {
+		winform.user_info_region_a0.add(area1_name);
+		winform.user_info_region_a0.selText = area1_name;
+	}	
+}
+catch(e){
+	winform.msgbox(e)
+}
+// 二级区域列表
+
+region_a2_list = function(area1_name){
+	winform.user_info_region_a1.clear();
+	var sql = "select rowid,area2_name from tbarea2 where father_id in (select area1_id from tbarea1 where area1_name = '"++ area1_name ++"') ORDER BY id DESC;"
+	for rowid,area2_name in quer_db.each(sql) {
+		winform.user_info_region_a1.add(area2_name);
+		winform.user_info_region_a1.selText = area2_name;
+	}
+}
+// 一级区域选择事件
+winform.user_info_region_a0.oncommand = function(id,event){
+	if( event = 0x1/*_CBN_SELCHANGE*/ ){
+		var area1_name = winform.user_info_region_a0.selText
+		region_a2_list(area1_name);
+	}
+}
+
+//核酸结果列表 动态窗台listview 使用 grid 创建视图 
+nucleic_acid_lists = function(user_id){
+	//动态窗台listview 使用 grid 创建视图
+	var sql = "SELECT result_date,inspection_results,citek,inspection_date FROM tbnucleicacid where user_id = '" ++ user_id ++ "'ORDER BY inspection_date DESC  LIMIT 30 ";
+	var dataTable = quer_db.getTable(sql);
+	var grid = win.ui.grid(winform.nucleic_acid_list);//创建数据视图
+	grid.setReadonlyColumns(1);//可选设置禁止编辑的列
+	grid.setReadonlyColumns(2);
+	grid.setReadonlyColumns(3);
+	grid.setReadonlyColumns(4);
+	grid.setColumns({"结果日期";"检测结果";"检测机构";"检测日期"}); //可选自定义显示列名
+	grid.setTable( dataTable );	
+}
+// 接种结果列表
+inoculation_lists = function(user_id){
+	if(user_id !=null ){
+		//动态窗台listview 使用 grid 创建视图
+		var sql = "select vaccines_name,vaccination_date,lnoculation_times from tbinoculation where user_id = '"++ user_id ++"' ORDER BY rowid ;";
+		var dataTable = quer_db.getTable(sql);
+		var grid = win.ui.grid(winform.inoculation_list);//创建数据视图
+		grid.setReadonlyColumns(1);//可选设置禁止编辑的列
+		grid.setReadonlyColumns(2);
+		grid.setReadonlyColumns(3);
+		
+		grid.setColumns({"疫苗名称";"接种时间";"接种次数"}); //可选自定义显示列名
+		grid.setTable( dataTable );	
+	}
+}
+
+// 用户列表
+user_list = function(user_id){
+	var sql = "select rowid,user_name,birthday_date,user_id,sex_name,nation_name,address_info,start_date,end_date,user_grep,user_region0,user_region1 from tbuser where user_id = '" ++ user_id ++ "' ORDER BY user_id DESC;"
+	var rel = quer_db.stepQuery(sql);
+	// 姓名
+	winform.search_name.text  = rel['user_name'];
+	// 出生日期)
+	winform.search_user_birthday.time=time(rel['birthday_date'],"%Y-%m-%d");
+	//性别
+	winform.search_user_sex.text  = rel['sex_name'];
+	// 民族
+	winform.search_user_nation.text  = rel['nation_name'];
+	// 地址
+	winform.search_address.text  = rel['address_info'];
+	// 证件号码
+	winform.search_user_id.text  = rel['user_id'];
+	// 有效日期
+	winform.user_start_date.time=time(rel['start_date'],"%Y-%m-%d");;
+	winform.user_end_date.time=time(rel['end_date'],"%Y-%m-%d");
+	// 签发机构
+	winform.search_user_grep.text  = rel['user_grep'];
+	// 区域
+	winform.user_info_region_a0.text  = rel['user_region0'];
+	winform.user_info_region_a1.text  = rel['user_region1'];
+
+}
+
+
+
 winform.plus.oncommand = function(id,event){
 	var search = winform.search_tx_a1.text;
 	if(search == 0){
@@ -29,18 +195,20 @@ winform.plus.oncommand = function(id,event){
 		winform.msgbox("请输入正确的查询内容！")
 		return winform;
 	}else{
-		var quer_db = sqlite("\sqlite\rmkj.db")
+		
 		// 查询结果
-		var flg = null;
+		var flg = true;
 		//查询数据库或接口
 		//console.log("正在查寻询内容！")
 		var sql = "select rowid,* from tbuser where user_id = '" ++ search ++ "' or user_name = '" ++ search ++ "' ORDER BY user_id DESC;"
 		for rowid,user_name,user_id in quer_db.each(sql) {
 			// 查询结果
-			flg = user_id;
-			winform.msgbox( "姓名：" ++ user_name ++ "身份证号：" + user_id ++ "。已打第三针 " ++ "北京生物制药")
+			user_list(user_id);
+			nucleic_acid_lists(user_id);
+			inoculation_lists(user_id);
+			flg = false;
 		}
-		if (flg == null) {
+		if (flg) {
 			winform.msgbox(" 查询不到该人员,请补录信息！")
 			return winform;
 		}
@@ -48,6 +216,14 @@ winform.plus.oncommand = function(id,event){
 		
 	}
 	
+}
+
+winform.plus3.oncommand = function(id,event){
+	winform.msgbox("编辑什么呢");
+}
+
+winform.plus2.oncommand = function(id,event){
+	winform.msgbox("……");
 }
 
 winform.show();

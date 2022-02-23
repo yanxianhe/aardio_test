@@ -15,6 +15,7 @@
 		</folder>
 		<folder name="main" path="forms\main" comment="forms\main" local="false" embed="false" ignored="false">
 			<file name="22.aardio" path="forms\main\22.aardio" comment="forms\main\22.aardio"/>
+			<file name="add_vacciones.aardio" path="forms\main\add_vacciones.aardio" comment="forms\main\add_vacciones1.aardio"/>
 			<file name="data_region.aardio" path="forms\main\data_region.aardio" comment="forms\main\data_region.aardio"/>
 			<file name="data_vaccines.aardio" path="forms\main\data_vaccines.aardio" comment="forms\main\data_vaccines.aardio"/>
 			<file name="date_mmenu.aardio" path="forms\main\date_mmenu.aardio" comment="forms\main\date_mmenu.aardio"/>
@@ -26,8 +27,6 @@
 			<file name="test1.aardio" path="forms\main\test1.aardio" comment="forms\main\test1.aardio"/>
 			<file name="user_address_menu.aardio" path="forms\main\user_address_menu.aardio" comment="forms\main\user_address_menu.aardio"/>
 			<file name="user_info_menu.aardio" path="forms\main\user_info_menu.aardio" comment="forms\main\user_info_menu.aardio"/>
-			<file name="add_vacciones.aardio" path="forms\main\add_vacciones.aardio" comment="forms\main\add_vacciones.aardio"/>
-			<file name="add_vacciones1.aardio" path="forms\main\add_vacciones1.aardio" comment="forms\main\add_vacciones1.aardio"/>
 		</folder>
 	</folder>
 	<folder name="sqlite" path="sqlite" comment="sqlite">

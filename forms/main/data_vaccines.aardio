@@ -40,6 +40,46 @@ vaccionesform.plus.skin({
 })
 
 
+del_rowid = function(vaccines_name){
+	var del_db = sqlite("\sqlite\rmkj.db");
+	var del_sql = "delete FROM tbvaccines where vaccines_name = '" ++ vaccines_name ++ "';";
+	del_db.exec(del_sql);
+	del_db.close();	
+}
+
+
+vaccionesform.popmenu = win.ui.popmenu(vaccionesform);//创建弹出菜单
+vaccionesform.popmenu.add('删除',function(id){
+	//在下面输入菜单响应代码
+	//.Items[index].Controls[index].
+	var rowid = vaccionesform.vvaccines_listview_a0.selIndex;
+	var vaccines_name = vaccionesform.vvaccines_listview_a0.items[rowid][2];
+	vaccionesform.vvaccines_listview_a0.delItem( rowid );
+	del_rowid(vaccines_name);
+	vvaccines_lists();
+});
+
+
+//双击listview控件添加下面的代码 
+vaccionesform.vvaccines_listview_a0.onnotify = function(id,code,ptr){ 
+    
+    select(code) {
+    	case  0xFFFFFF9B/*_LVN_ITEMCHANGED*/ {
+    		var nm = vaccionesform.vvaccines_listview_a0.getNotifyMessage(code,ptr);
+    		if ( (nm.uChanged & 0x8/*_LVIF_STATE*/) && (nm.uNewState & 0x2/*_LVIS_SELECTED*/) ) {
+    			if(vaccionesform.vvaccines_listview_a0.selIndex){
+        			//console.log(vaccionesform.vvaccines_listview_a0.getItemText(nm.iItem,nm.iSubItem));
+        		}
+        	}
+    	}
+    	case 0xFFFFFFFB/*_NM_RCLICK*/  {
+    		var x,y = win.getCursorPos();
+    		vaccionesform.popmenu.popup(x,y,true);//弹出菜单
+    	}
+    }
+    
+}
+
 // 查询
 vaccionesform.plus.oncommand = function(id,event){
 	var search = vaccionesform.search_tx_a1.text;
@@ -56,10 +96,11 @@ vaccionesform.plus.oncommand = function(id,event){
 	
 }
 
-
+// 根据条件查询
 vaccines_lists = function(search){
 	//动态窗台listview 使用 grid 创建视图
-	var sql = "SELECT rowid,vaccines_name,batch_number,manufacturer,validity_date,vac_dosage,specifications,inventory FROM tbvaccines where vaccines_name '"++ search ++"'  ORDER BY rowid  LIMIT 1000 ";
+	var sql = "SELECT rowid,vaccines_name,batch_number,manufacturer,validity_date,vac_dosage,specifications,inventory FROM tbvaccines where vaccines_name like '%"++ search ++"%'  ORDER BY rowid  LIMIT 1000 ";
+
 	var dataTable = quer_db.getTable(sql);
 	var grid = win.ui.grid(vaccionesform.vvaccines_listview_a0);//创建数据视图
 	for(i=1;8;1){
@@ -81,6 +122,10 @@ vvaccines_lists = function(){
 	grid.setColumns({"序号";"疫苗名称";"批次号";"生产企业";"有效期";"剂型";"规格";"库存"}); //可选自定义显示列名
 	grid.setTable( dataTable );	
 }
+
+
+
+
 // 增加
 
 vaccionesform.plus2.oncommand = function(id,event){

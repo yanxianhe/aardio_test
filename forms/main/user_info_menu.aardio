@@ -118,7 +118,7 @@ region_a2_list = function(area1_name){
 
 // -----------核酸检测 接种信息-------------
 var nucleic_acid = winform.user_info_tab.loadForm("\forms\main\nucleic_acid.aardio");
-var inoculation = winform.user_info_tab.loadForm("\forms\main\inoculation.aardio");
+var inoculationform = winform.user_info_tab.loadForm("\forms\main\inoculation.aardio");
 
 
 // -----------核酸检测 接种信息-------------
@@ -132,6 +132,9 @@ nucleic_acid_lists = function(user_id){
 	var dataTable = quer_db.getTable(sql);
 	var grid = win.ui.grid(nucleic_acid.nucleic_acid_list);//创建数据视图
 	grid.setReadonlyColumns(1);//可选设置禁止编辑的列
+	//grid.setReadonlyColumns(2);
+	grid.setReadonlyColumns(3);
+	grid.setReadonlyColumns(4);
 	grid.setColumns({"结果日期";"检测结果";"检测机构";"检测日期"}); //可选自定义显示列名
 	grid.setTable( dataTable );	
 }
@@ -174,7 +177,7 @@ winform.button.oncommand = function(id,event){
 	
 	
 	nucleic_acid.nucleic_acid_user_id.text = user_id;
-	inoculation.inoculation_user_id.text = user_id;
+	inoculationform.inoculation_user_id.text = user_id;
 
 	
 	
@@ -237,15 +240,6 @@ winform.user_info_submit_a0.oncommand = function(id,event){
 	/* 核酸检测页面信息 end */ 
 	
 	
-	
-	
-	/* 接种信息 begin */ 
-	
-	/* 接种信息 end */ 
-	
-	
-	
-	
 	// 人员是否需要入口
 	if (user_flg) {
 		try{
@@ -269,8 +263,6 @@ winform.user_info_submit_a0.oncommand = function(id,event){
 		catch(e){
 			tbuser_db.close();
 		}
-		
-
 	}
 	
 	// 核酸是否需要入口
@@ -296,7 +288,10 @@ winform.user_info_submit_a0.oncommand = function(id,event){
 	}
 	catch(e){
 		tbnucleicacid.close();
-	}	
+	}
+	
+	
+	nucleic_acid_lists(user_id);	
 }
 
 winform.update_bt.skin(
@@ -338,6 +333,14 @@ winform.update_bt.oncommand = function(id,event){
 	}
 	
 }
+
+
+
+winform.get_user_id = function(){
+	return winform.user_info_id_tx_a0.text; 
+}
+
+
 
 winform.show();
 win.loopMessage();
