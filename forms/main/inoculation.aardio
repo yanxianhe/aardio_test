@@ -8,7 +8,7 @@ var inoculationform = win.form(text="接种信息";right=759;bottom=469;bgcolor=
 inoculationform.add(
 inoculation_list={cls="listview";left=12;top=175;right=744;bottom=443;ah=1;aw=1;edge=1;msel=false;vscroll=1;z=9};
 inoculation_user_id={cls="edit";left=318;top=53;right=507;bottom=75;dl=1;dt=1;edge=1;hide=1;z=2};
-lnoculation_times={cls="plus";left=76;top=51;right=172;bottom=77;align="left";border={bottom=1;color=-6908266};dl=1;dt=1;editable=1;font=LOGFONT(h=-13);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={top=6;bottom=2};z=7};
+lnoculation_times={cls="plus";left=76;top=51;right=172;bottom=77;align="left";border={bottom=1;color=-6908266};dl=1;dt=1;editable="edit";font=LOGFONT(h=-13);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={top=6;bottom=2};z=7};
 plus={cls="plus";text="接种记录";left=2;top=101;right=760;bottom=131;align="left";bgcolor=11580047;dl=1;dt=1;font=LOGFONT(h=-16);textPadding={left=145};z=8};
 plus2={cls="plus";text="添加记录";left=206;top=53;right=292;bottom=77;bgcolor=11580047;dl=1;dt=1;font=LOGFONT(h=-13);iconStyle={align="left";font=LOGFONT(h=-13;name='FontAwesome');padding={left=6}};iconText='\uF067';notify=1;paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=16};z=10};
 static={cls="static";text="疫苗名称";left=6;top=15;right=64;bottom=36;align="center";center=1;dl=1;dt=1;notify=1;transparent=1;z=1};
@@ -68,6 +68,11 @@ inoculation_lists = function(user_id){
 	}
 }
 
+user_check = function(user_id,vaccines_name,lnoculation_times){
+	var user_sql = "select rowid,user_id from tbuser where user_id = '"++user_id++"' limit 1;";
+	var user_rel = quer_db.stepQuery(user_sql);
+	return user_rel ; 	
+}
 
 
 add_check = function(user_id,vaccines_name,lnoculation_times){
@@ -80,19 +85,25 @@ add_check = function(user_id,vaccines_name,lnoculation_times){
 
 // 添加
 inoculationform.plus2.oncommand = function(id,event){
-	
-	
+	var flg = true;
 	user_id = inoculationform.inoculation_user_id.text;
 	var vaccines_name = inoculationform.vaccines_name_box.text;
 	var vaccination_date = inoculationform.vaccination_date.text;
 	var lnoculation_times = inoculationform.lnoculation_times.text;
-	var user_flg = add_check(user_id,vaccines_name,lnoculation_times);
+	string.trim(lnoculation_times)
+
 	
-	inoculation_lists(user_id);
-	if (lnoculation_times == null) {
+	var check_id = user_check(user_id,vaccines_name,lnoculation_times);
+	var user_flg = add_check(user_id,vaccines_name,lnoculation_times);
+
+	if(check_id == null){
+		inoculationform.msgbox("没有找到人员信息，请先添加人员信息！");
+		flg = false;
+	}elseif((lnoculation_times == null) || (string.trim(lnoculation_times) == "")){
 		inoculationform.msgbox("接种次数不能为空！");
+		flg = false;
 	}
-	if (user_flg == null) {
+	if(user_flg == null and flg) {
 		try{
 			var tbinoculation_db = sqlite("\sqlite\rmkj.db");
 			var cmd = tbinoculation_db.prepare("REPLACE INTO tbinoculation VALUES (@user_id,@vaccines_name,@vaccination_date,@lnoculation_times);" ) 
@@ -108,10 +119,10 @@ inoculationform.plus2.oncommand = function(id,event){
 			tbinoculation_db.close();
 		}
 		inoculation_lists(user_id);
-	}else {
+	}elseif(flg) {
+		inoculation_lists(user_id);
 		inoculationform.msgbox("已经存在了！");
 	}
-	
 }
 
 inoculationform.show();
