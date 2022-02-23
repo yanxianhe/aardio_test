@@ -24,7 +24,7 @@ search_user_nation={cls="combobox";left=160;top=318;right=247;bottom=338;dl=1;dt
 search_user_sex={cls="combobox";left=71;top=318;right=116;bottom=338;dl=1;dt=1;edge=1;font=LOGFONT(h=-11);items={};mode="dropdownlist";z=25};
 static={cls="static";text="证件类型";left=16;top=147;right=83;bottom=173;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=3};
 static10={cls="static";text="头像";left=24;top=97;right=91;bottom=122;center=1;dl=1;dt=1;transparent=1;z=12};
-static11={cls="static";text="所属区域";left=14;top=410;right=83;bottom=435;align="center";center=1;font=LOGFONT(h=-11);transparent=1;z=30};
+static11={cls="static";text="所属区域";left=14;top=410;right=83;bottom=435;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=30};
 static2={cls="static";text="证件号码";left=16;top=180;right=83;bottom=207;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=4};
 static3={cls="static";text="户籍地址";left=16;top=212;right=83;bottom=238;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=5};
 static4={cls="static";text="出生日期";left=16;top=244;right=83;bottom=272;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=6};
@@ -35,8 +35,8 @@ static8={cls="static";text="签发机关";left=16;top=345;right=83;bottom=375;al
 static9={cls="static";text="有效日期";left=15;top=382;right=82;bottom=406;align="center";center=1;dl=1;dt=1;font=LOGFONT(h=-11);transparent=1;z=11};
 user_end_date={cls="datetimepick";left=180;top=384;right=265;bottom=404;dl=1;dt=1;edge=1;font=LOGFONT(h=-11);z=29};
 user_id_type={cls="plus";text="居民身份证";left=89;top=143;right=241;bottom=169;align="left";border={bottom=1;color=-6908266};dl=1;dt=1;font=LOGFONT(h=-11);paddingBottom=1;paddingLeft=1;paddingRight=1;paddingTop=1;textPadding={left=2;top=2;right=2;bottom=2};valign="top";z=20};
-user_info_region_a0={cls="combobox";left=27;top=440;right=117;bottom=460;edge=1;items={};mode="dropdown";z=31};
-user_info_region_a1={cls="combobox";left=136;top=440;right=267;bottom=460;edge=1;items={};mode="dropdown";z=32};
+user_info_region_a0={cls="combobox";left=27;top=440;right=117;bottom=460;dl=1;dt=1;edge=1;items={};mode="dropdown";z=31};
+user_info_region_a1={cls="combobox";left=136;top=440;right=267;bottom=460;dl=1;dt=1;edge=1;items={};mode="dropdown";z=32};
 user_start_date={cls="datetimepick";left=85;top=385;right=168;bottom=405;dl=1;dt=1;edge=1;font=LOGFONT(h=-11);z=28}
 )
 /*}}*/
