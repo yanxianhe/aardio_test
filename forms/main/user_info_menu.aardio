@@ -110,6 +110,37 @@ region_a2_list = function(area1_name){
 		winform.user_info_region_a1.selText = area2_name;
 	}
 }
+//身份证校验 18位
+user_check_id = function(user_id){
+	var flg = false;
+	//var A="231085198905170754"
+	if(string.len(user_id) == 18){
+		var A = string.trim(user_id);
+		var W={7;9;10;5;8;4;2;1;6;3;7;9;10;5;8;4;2}
+		var jy={1;0;X;9;8;7;6;5;4;3;2}
+		var s=0
+		for(i=1;17;1){
+        		var Ai=tonumber(string.slice(A,i,i))
+        		s=s+(Ai*W[i])
+		}
+		var Y=s%11
+		
+		if (tonumber(string.right(A,1))==jy[Y+1]){
+			flg = true; 
+		}else{
+			flg = false; 
+		}
+	}
+	return  flg; 	
+}
+
+quer_user_id = function(user_id){
+	
+	var sql = "select rowid,user_name,birthday_date,user_id,sex_name,nation_name,address_info,start_date,end_date,user_grep,user_region0,user_region1 from tbuser where user_id = '" ++ user_id ++ "' ORDER BY user_id DESC;"
+	return quer_db.stepQuery(sql);
+	
+}
+
 
 
 // 全局变量 user_info 
@@ -176,6 +207,7 @@ winform.button.oncommand = function(id,event){
 	}
 	
 	
+	
 	nucleic_acid.nucleic_acid_user_id.text = user_id;
 	inoculationform.inoculation_user_id.text = user_id;
 
@@ -240,8 +272,32 @@ winform.user_info_submit_a0.oncommand = function(id,event){
 	/* 核酸检测页面信息 end */ 
 	
 	
+	//
+
+	
+	if(user_name == null || string.trim(user_name) == "" || string.trim(user_name) == "输入姓名"){
+		user_flg = false;
+		winform.msgbox("请填写姓名！");	
+	}elseif(address_info == null || string.trim(address_info) == "" ){
+		user_flg = false;
+		winform.msgbox("地址不能为空！");
+	}elseif(!(user_check_id(user_id))){ //校验身份证号码是否有效
+		user_flg = false;
+		winform.msgbox("二代身份证校验失败！");
+	}elseif(user_grep == null || string.trim(user_grep) == "" ){
+		user_flg = false;
+		winform.msgbox("签发机构不能为空！");
+	}elseif(user_region0 == null || string.trim(user_region0) == "" ){
+		user_flg = false;
+		winform.msgbox("区域不能为空！");
+	}elseif(user_region1 == null || string.trim(user_region1) == "" ){
+		user_flg = false;
+		winform.msgbox("区域不能为空！");
+	}
+	
 	// 人员是否需要入口
 	if (user_flg) {
+		
 		try{
 			var tbuser_db = sqlite("\sqlite\rmkj.db");
 			var cmd = tbuser_db.prepare("REPLACE INTO tbuser VALUES (@user_name,@user_id,@sex_name,@nation_name,@address_info,@start_date,@end_date,@user_grep,@user_region0,@user_region1,@birthday_date);" ) 
@@ -258,36 +314,39 @@ winform.user_info_submit_a0.oncommand = function(id,event){
 				user_region1 = user_region1;
 				birthday_date = birthday_date;
 			)
+			
 			tbuser_db.close();	
 		}
 		catch(e){
 			tbuser_db.close();
 		}
 	}
-	
-	// 核酸是否需要入口
-	//winform.msgbox(inspection_date ++ result_date ++ citek ++ inspection_results);
-	try{
-		var tbnucleicacid = sqlite("\sqlite\rmkj.db");
-		
-		var q_sql = "select rowid,user_id,inspection_date from tbnucleicacid where user_id = '" ++ user_id ++ "' and inspection_date = ' " ++ inspection_date ++ "'";
-		var q_rel = tbnucleicacid.stepQuery(q_sql);
-		// 证件号码一天只能录入一次 (一天做一次核酸)
-		if(q_rel == null && #citek){
-			var cmd = tbnucleicacid.prepare("REPLACE INTO tbnucleicacid VALUES (@user_id,@inspection_date,@citek,@inspection_results,@result_date);" ) 
-			cmd.step(
-				user_id = user_id;
-				inspection_date = inspection_date;
-				citek = citek;
-				inspection_results = inspection_results;
-				result_date = result_date;
-			)
-			
+	if (quer_user_id(user_id) == null) {
+		//winform.msgbox("请点击读证件，然后信息后添加核酸记录");
+	}else {
+		// 核酸是否需要入口
+		//winform.msgbox(inspection_date ++ result_date ++ citek ++ inspection_results);
+		try{
+			var tbnucleicacid = sqlite("\sqlite\rmkj.db");
+			var q_sql = "select rowid,user_id,inspection_date from tbnucleicacid where user_id = '" ++ user_id ++ "' and inspection_date = ' " ++ inspection_date ++ "'";
+			var q_rel = tbnucleicacid.stepQuery(q_sql);
+			// 证件号码一天只能录入一次 (一天做一次核酸)
+			if(q_rel == null && #citek){
+				var cmd = tbnucleicacid.prepare("REPLACE INTO tbnucleicacid VALUES (@user_id,@inspection_date,@citek,@inspection_results,@result_date);" ) 
+				cmd.step(
+					user_id = user_id;
+					inspection_date = inspection_date;
+					citek = citek;
+					inspection_results = inspection_results;
+					result_date = result_date;
+				)
+				
+				tbnucleicacid.close();
+			}
+		}
+		catch(e){
 			tbnucleicacid.close();
 		}
-	}
-	catch(e){
-		tbnucleicacid.close();
 	}
 	
 	
@@ -331,7 +390,7 @@ winform.update_bt.oncommand = function(id,event){
 	catch(e){
 		update_db.close();
 	}
-	
+	nucleic_acid_lists(user_id);
 }
 
 

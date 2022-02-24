@@ -1,90 +1,112 @@
 import win.ui;
+import win.ui.grid;
+import sqlite;
+import console;
 /*DSG{{*/
-var winform = win.form(text="地址管理";right=939;bottom=772;bgcolor=16777215)
-winform.add(
-custom={cls="custom";left=148;top=11;right=921;bottom=45;bgcolor=16777215;db=1;dl=1;dr=1;dt=1;z=4};
-static={cls="static";left=139;top=7;right=140;bottom=757;bgcolor=16752414;clip=1;db=1;dl=1;dt=1;z=3};
-strip1={cls="plus";text="1号区域";left=31;top=34;right=139;bottom=63;bgcolor=16752414;clip=1;dl=1;dt=1;z=1};
-strip2={cls="plus";text="1号区域";left=31;top=63;right=139;bottom=92;bgcolor=16752414;clip=1;dl=1;dt=1;z=2}
+var address_topology = win.form(text="地址拓扑";right=759;bottom=469;max=false)
+address_topology.add(
+listview={cls="listview";left=193;top=65;right=734;bottom=449;dl=1;dt=1;edge=1;vscroll=1;z=2};
+static={cls="static";left=196;top=31;right=728;bottom=56;transparent=1;z=3};
+treeview={cls="treeview";left=17;top=65;right=173;bottom=452;asel=false;bgcolor=16777215;dl=1;dt=1;edge=1;hscroll=1;vscroll=1;z=1}
 )
 /*}}*/
 
-// 创建高级选项卡
-import win.ui.tabs;
+var quer_db = sqlite("\sqlite\rmkj.db");
 
-// 至少要添加2个创建好的选项卡(作为设计模板,创建成功后可清除)
-var tbs = win.ui.tabs(winform.strip2,winform.strip1);
 
-// 指定选项卡的外观样式,用法请参考plus控件说明
-tbs.skin(
-    background = {  // 背景
-        default = 0xFFFFFFFF;
-    }
-    color = { // 文本颜色
-        hover = 0xF00000FF; 
-    } 
-    border = { // 边框
-        default = { bottom = 1;color= 0xFF1E9FFF;  }
-        hover = { bottom = 1;right = 4;color= 0xFF1E9FFF; }
-    }
-    checked = { // 选中状态
-        background = { 
-            hover = 0xFF99CCFF;
-            focus = 0xFF1E9FFF;
-            active = 0xFF333366;
-            default = 0xFF1E9FFF;
-        }
-        color = { // 文本颜色
-            hover = 0xFF000000; 
-            default = 0xFFFFFFFF; 
-        } 
-        border = { // 边框
-            hover = { right = 2;color=0xFF1E9FFF}
-            default = { right = 2;color=0xFF1E9FFF}
-        }
-    }
-)
 
-// 动态添加更多选项卡
+// 加载二级区域
 
-for(i=3;50;1){
-	tbs.add({
-		text= i + "号区域"
-	})
+tow_list = function(area1_id,node1){
+	var sql = "select rowid,area2_id,area2_name from tbarea2 where father_id = '"++ area1_id ++"' ORDER BY id DESC ;";
+	for rowid,area2_id,area2_name in quer_db.each(sql) {
+		address_topology.treeview.insertItem( { text=area2_name },node1);//添加树枝,指定父节点
+		//address_topology.treeview.expand(node1) //展开项
+    	address_topology.treeview.redraw()//刷新
+	}
 }
 
-/**
-import web.form;
-var wb = web.form( win.form(),5/*_UIFLAG_DIALOG*/,,,true);
-wb.noScriptErr = true;
-wb.go("http://www.rmanp.com/");
+// 遍历一级区域
 
-// 动态添加更多选项卡
-tbs.add({
-    text="打开网站";  
-    hasCloseButton = true; // 允许显示关闭按钮
-},wb._form)
-
-
-// 也可以用下面的代码自定义关闭按钮的外观样式
-tbs.closeButton.skin(
-    background = { 
-        hover = 0xFFe35c51; 
-        active = 0xFF8f241b;
-        default = 0x99FFCC66; 
-    }
-    color = {
-        hover = 0xFFFFFFFF; 
-        active = 0xFFEEEEEE;
-        default = 0xCCFFFFFF; 
-    } 
-)
-
-// 可以自定义关闭按钮在选项卡上的显示位
-tbs.beforeShowCloseButton = function(strip,rcStrip,rcCloseButton){
-    return rcStrip.right - rcCloseButton.width() - 5, rcStrip.top + ( rcStrip.height() - rcCloseButton.height() )/2;
+one_list = function(){
+	var sql =  "SELECT rowid,area1_id,area1_name from tbarea1 ORDER BY id DESC;";
+	address_topology.treeview.insertItem( text="全部数据");
+	for rowid,area1_id,area1_name in quer_db.each(sql) {
+		var node1 = address_topology.treeview.insertItem( text=area1_name);
+		tow_list(area1_id,node1);
+	}
 }
-**/
-winform.show();
+
+
+address_topology.treeview.onnotify = function(id,code,ptr){
+ 
+	if( code == 0xFFFFFFFE/*_NM_CLICK*/ ){  
+		var hItem = address_topology.treeview.hitTest()  
+		if( hItem ){ 
+			 //address_topology.static.text =  address_topology.treeview.getItemText(hItem);
+			 address_topology.static.text =  "当前路径：" ++ address_topology.treeview.getItemPath(hItem);
+			  
+		}
+	}
+	elseif(code = 0xFFFFFFFB/*_NM_RCLICK*/){ 
+		var x,y = win.getMessagePos();
+		var hItem,tvht = address_topology.treeview.hitTest(x,y,true);
+		var menu = win.ui.popmenu(address_topology)
+		menu.add("查询拓扑",
+			function(){
+				query_topology_information(address_topology.treeview.getItemPath(hItem));
+			}
+		)
+		menu.popup(x,y,true);
+	} 
+} 
+  
+
+//加载初始化页面
+one_list();
+
+
+// 查询拓扑
+query_topology_information = function(query_path){
+	// 组织信息页面
+	var tmp = tostring(query_path);
+
+	//动态窗台listview 使用 grid 创建视图
+	var grid = win.ui.grid(address_topology.listview);//创建数据视图
+	for(i=1;5;1){
+		grid.setReadonlyColumns(i);
+	}
+	grid.setColumns({"序号";"姓名";"身份证号";"一级区域";"二级区域"}); //可选自定义显示列名
+	
+	var path = string.indexAny(tmp,"\");
+	if(path == null || string.trim(path) == ""){
+		var quer_info_sql = null;
+		if("全部数据" == tmp ){
+			quer_info_sql = "select rowid,user_name,user_id,user_region0,user_region1 from tbuser where 1 = 1 ORDER BY rowid;";
+		}else {
+			quer_info_sql = "select rowid,user_name,user_id,user_region0,user_region1 from tbuser where user_region0 = '"++ tmp ++"' ORDER BY rowid ;";
+		}
+		
+			
+		
+		var dataTable = quer_db.getTable(quer_info_sql);
+
+		
+		grid.setTable( dataTable );	
+
+	}else {
+		var user_region0 = string.split(tmp,"<\>")[1];
+		var user_region1 = string.split(tmp,"<\>")[2];
+		var quer_info_sql = "select rowid,user_name,user_id,user_region0,user_region1 from tbuser where user_region0 = '"++ user_region0 ++"' and user_region1 = '"++ user_region1 ++"' ORDER BY rowid;";
+
+		var dataTable = quer_db.getTable(quer_info_sql);
+
+		
+		grid.setTable( dataTable );	
+	}
+}
+
+
+address_topology.show();
 win.loopMessage();
-return winform;
+return address_topology;
